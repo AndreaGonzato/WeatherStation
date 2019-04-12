@@ -7,6 +7,40 @@
 #include "SevSeg.h"
 SevSeg sevseg; 
 
+//for lcd display
+#include <SPI.h>
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+
+#define SCREEN_WIDTH 128 // OLED display width, in pixels
+#define SCREEN_HEIGHT 32 // OLED display height, in pixels
+
+// Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
+#define OLED_RESET     4 // Reset pin # (or -1 if sharing Arduino reset pin)
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+
+#define NUMFLAKES     10 // Number of snowflakes in the animation example
+
+#define LOGO_HEIGHT   16
+#define LOGO_WIDTH    16
+static const unsigned char PROGMEM logo_bmp[] =
+{ B00000000, B11000000,
+  B00000001, B11000000,
+  B00000001, B11000000,
+  B00000011, B11100000,
+  B11110011, B11100000,
+  B11111110, B11111000,
+  B01111110, B11111111,
+  B00110011, B10011111,
+  B00011111, B11111100,
+  B00001101, B01110000,
+  B00011011, B10100000,
+  B00111111, B11100000,
+  B00111111, B11110000,
+  B01111100, B11110000,
+  B01110000, B01110000,
+  B00000000, B00110000 };
 const long longPressTime = 1000;    // it is just a const, that indicate how many millisec is a long click
 
 //CONSTANTS
@@ -97,6 +131,7 @@ unsigned long previousTimeBlink; // the last blink was a this time previousTimeB
 unsigned long synchronizationTimeInterval = 1000; // 1000 millis = 1 second
 unsigned long blinkingTime = 500; 
 boolean displayOn = true;
+boolean scrollMenu = false;
 
 void setup(){
 
@@ -154,6 +189,14 @@ void setup(){
   
 
   Serial.begin(9600);
+
+  // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
+  if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { // Address 0x3C for 128x32
+    Serial.println(F("SSD1306 allocation failed"));
+    for(;;); // Don't proceed, loop forever
+  }
+  testdrawstyles();
+  display.display();
   
 }
 
@@ -166,6 +209,11 @@ void loop(){
     previousTime = currentTime;   // updates the previous time: previousTime remember when the last sec was pass
     sec += 1;                     //update sec
     Serial.println(sec);          //print the actual sec ofnthe clok on the consol
+    if(scrollMenu){
+      testdrawstyles();
+      display.display();
+    }
+    
   }
 
   controlSetBotton(); //control what to do when the setButton receives a click ora a long click
@@ -194,6 +242,17 @@ void loop(){
 
   //DISPLAY TIME
   displayTime(); 
+
+}
+
+void testdrawstyles(void) {
+  display.clearDisplay();
+
+  display.setTextSize(2);             // Normal 1:1 pixel scale
+  display.setTextColor(WHITE);        // Draw white text
+  display.setCursor(0,0);             // Start at top-left corner
+  display.println(F("Time"));
+
 
 }
 
