@@ -77,7 +77,7 @@ const int seg_p[] = {33, 25};
 //BOTTONS pins
 const int setButton = 2;
 const int minButton = 3;
-const int plusButton = 4;
+const int plusButton = 5;
 
 
 // variables that will change:
