@@ -1,13 +1,8 @@
-/*
- * TO DO:
- * 1:  control when you want are going to a negative time during settings (for min sec...)
- * 2:   
- */
-
+//library for 7-segments display
 #include "SevSeg.h"
 SevSeg sevseg; 
 
-//for lcd display
+//library for OLED display
 #include <SPI.h>
 #include <Wire.h>
 #include <Adafruit_GFX.h>
@@ -20,34 +15,17 @@ SevSeg sevseg;
 #define OLED_RESET     4 // Reset pin # (or -1 if sharing Arduino reset pin)
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
-#define NUMFLAKES     10 // Number of snowflakes in the animation example
-
-#define LOGO_HEIGHT   16
-#define LOGO_WIDTH    16
-static const unsigned char PROGMEM logo_bmp[] =
-{ B00000000, B11000000,
-  B00000001, B11000000,
-  B00000001, B11000000,
-  B00000011, B11100000,
-  B11110011, B11100000,
-  B11111110, B11111000,
-  B01111110, B11111111,
-  B00110011, B10011111,
-  B00011111, B11111100,
-  B00001101, B01110000,
-  B00011011, B10100000,
-  B00111111, B11100000,
-  B00111111, B11110000,
-  B01111100, B11110000,
-  B01110000, B01110000,
-  B00000000, B00110000 };
-const long longPressTime = 1000;    // it is just a const, that indicate how many millisec is a long click
+/////////////////////////////////////////////////////////////////
 
 //CONSTANTS
+const long longPressTime = 1000;    // it is just a const, that indicate how many millisec is a long click for the system
+
 
 // DIGITAL PIN
 
 //DISPLAY
+
+//7-segments 4 digit display
 const int seg_a_4_digits = 49;
 const int seg_b_4_digits = 47;
 const int seg_c_4_digits = 44;
@@ -58,13 +36,13 @@ const int seg_g_4_digits = 45;
 const int seg_p_4_digits = 43; //point  .
 const int seg_dp_4_digits = 46; //double point  :
 
-//display digits:
+//display digits of:
 const int d1 = 53; //Digit 1
 const int d2 = 52; //Digit 2
 const int d3 = 51; //Digit 3
 const int d4 = 50; //Digit 4
 
-// display 1 & 2
+// single digit display 1 & 2
 const int seg_a[] = {38, 30};
 const int seg_b[] = {37, 29};
 const int seg_c[] = {34, 26};
@@ -74,13 +52,21 @@ const int seg_f[] = {39, 31};
 const int seg_g[] = {40, 32};
 const int seg_p[] = {33, 25}; 
 
-//BOTTONS pins
+//BUTTONS pins
 const int setButton = 2;
 const int minButton = 3;
 const int plusButton = 5;
 
 
-// variables that will change:
+// GLOBAL VARIABLES
+
+//TIME VAR
+int sec;
+int minutes;
+int hours;
+int days;
+
+unsigned long blinkingTime = 500;
 
 //BUTTON VAR
 //variable for reading the Buttons status (true if Botton is press, false if is not press)
@@ -94,7 +80,7 @@ boolean displaySec = true;
 boolean displayMin = true;
 boolean displayHours = true;
 
-
+//just for the right evulution of the script (I have to find a better way)
 boolean avoidIfPlus = true;
 boolean avoidIfMin = true;
 
@@ -111,25 +97,21 @@ int setingTimeSubMenu = 0;
  *  3 : sec
  *  4 : we have finished to set evrything, now immidatly go to state 0  (4 --> 0)
  */
+int menuActivity = 0;
+//Here there is a leggend for how this var work:
+/*
+ *  -1: go to temperature
+ *  0 : time
+ *  1 : date
+ *  2 : temperature
+ *  3 : go to time
+ */
 
-
-long setButtonTimer = 0;            // var to calcolate how long was the clik on setBotton
-
-
-
-
-
-//TIME VAR
-int sec;
-int minutes;
-int hours;
-int days;
-
+long setButtonTimer = 0;            // var to calcolate how long was the clik on setBotton, it get the inizial time when setBotton was pressed
 
 unsigned long previousTime;  // a var to control/remember when the last second started
 unsigned long previousTimeBlink; // the last blink was a this time previousTimeBlink
 unsigned long synchronizationTimeInterval = 1000; // 1000 millis = 1 second
-unsigned long blinkingTime = 500; 
 boolean displayOn = true;
 boolean scrollMenu = false;
 
@@ -189,13 +171,15 @@ void setup(){
   
 
   Serial.begin(9600);
-
-  // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
+  
+  //OLED SET UP
   if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { // Address 0x3C for 128x32
     Serial.println(F("SSD1306 allocation failed"));
     for(;;); // Don't proceed, loop forever
   }
-  testdrawstyles();
+  
+  //display somthing on OLED display
+  OLEDisplayText("TIME");
   display.display();
   
 }
@@ -204,20 +188,14 @@ void loop(){
 
   unsigned long currentTime = millis(); // update current time
 
-   
   if (currentTime - previousTime >= synchronizationTimeInterval){   // if time is up (1 second has pass)
     previousTime = currentTime;   // updates the previous time: previousTime remember when the last sec was pass
     sec += 1;                     //update sec
-    Serial.println(sec);          //print the actual sec ofnthe clok on the consol
-    if(scrollMenu){
-      testdrawstyles();
-      display.display();
-    }
-    
+    Serial.println(sec);          //print the actual sec on the consol, just for having a log/time rappresentation
   }
 
-  controlSetBotton(); //control what to do when the setButton receives a click ora a long click
-
+  controlSetBotton();         //control what to do when the setButton receives a click/long click
+  controlNavigationButton();  //control what to do when the minButton or plusButton receives a click/long click
   
   if(settingTimeMode){
     settingTime(currentTime);  //control the system during the setting process.
@@ -238,21 +216,42 @@ void loop(){
       }
     }
   }
-  
 
-  //DISPLAY TIME
-  displayTime(); 
 
+  //DISPLAY
+  displayTime(); //display 7-segments display
+
+  //control OLED display 
+  if(scrollMenu){
+    //do that only if you are changing menu
+    
+    switch (menuActivity)
+    {
+      //decide what to display
+      case 0:
+        OLEDisplayText("TIME");
+        break;
+      case 1:
+        OLEDisplayText("DATE");
+        break;
+      case 2:
+        OLEDisplayText("TEMP");
+        break;
+    }
+    display.display();
+    scrollMenu = false; 
+     
+  }
 }
 
-void testdrawstyles(void) {
+void OLEDisplayText(String text) {
   display.clearDisplay();
 
   display.setTextSize(2);             // Normal 1:1 pixel scale
   display.setTextColor(WHITE);        // Draw white text
   display.setCursor(0,0);             // Start at top-left corner
-  display.println(F("Time"));
 
+  display.println(text);              // Display the text 
 
 }
 
@@ -299,13 +298,50 @@ void controlSetBotton(){
     //check if the setButton had a long click
     if ((millis() - setButtonTimer > longPressTime) && (settingTimeMode == false)) {
       //setButton had a long click
-      settingTimeMode = true;  // now we are in the menu mode
+      settingTimeMode = true;  // now we are in the setting time mode
       setingTimeSubMenu = 1;
       Serial.println("LONG CLICK");
       printSubMenu(setingTimeSubMenu);
     }
   }else{
     setButtonState = false;     // setButton in not press
+  }
+}
+
+void controlNavigationButton(){
+  // this method check if the plusButton/minButton are pressed/long click and performs actions based also on its previous history
+  
+  if(!plusButtonState && !settingTimeMode && digitalRead(plusButton) == HIGH){
+    //the plusButton is pressed and I'm not setting things
+    
+    plusButtonState = true;
+    Serial.println("change feature");
+    scrollMenu = true;
+    menuActivity = menuActivity + 1;
+    if(menuActivity >= 3){
+      menuActivity = 0;
+    }
+    //Serial.println(menuActivity);
+  }
+
+  if(digitalRead(plusButton) == LOW){
+    plusButtonState = false;
+  }
+  
+  if(!minButtonState && !settingTimeMode && digitalRead(minButton) == HIGH){
+    //the minButton is pressed and I'm not setting things
+    
+    minButtonState = true;
+    Serial.println("change feature");
+    scrollMenu = true;
+    menuActivity = menuActivity - 1;
+    if(menuActivity <= -1){
+      menuActivity = 2;
+    }
+    //Serial.println(menuActivity);
+  }
+  if(digitalRead(minButton) == LOW){
+    minButtonState = false;
   }
 }
 
