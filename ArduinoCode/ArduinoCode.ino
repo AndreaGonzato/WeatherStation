@@ -64,7 +64,9 @@ const int plusButton = 5;
 int sec;
 int minutes;
 int hours;
-int days;
+int day = 1;
+int month = 1;
+int year = 19;
 
 unsigned long blinkingTime = 500;
 
@@ -121,7 +123,6 @@ void setup(){
   sec = 0;
   minutes = 0;
   hours = 0;
-  days = 0;
   
   //declare pin:
   //display (4 digits)
@@ -201,27 +202,31 @@ void loop(){
     settingTime(currentTime);  //control the system during the setting process.
   }
 
-  //data type is correct ?
-  if(sec >= 60){
-    minutes += 1;
-    sec = sec % 60;
-    
-    if(minutes >= 60){
-      hours += 1;
-      minutes = minutes % 60;
-      
-      if(hours >= 24){
-        days += 1;
-        hours = 0;
-      }
-    }
+  //controol that the data type are right (e.g. seconds > 60)
+  dataValidation();
+
+
+  //DISPLAY info
+  switch (menuActivity)
+  {
+    //decide what to display
+    case 0:
+      displayTime();
+      break;
+    case 1:
+      displayDate();
+      break;
+    case 2:
+      displayTime();
+      break;
   }
+  
+  OLEDisplay();
+}
 
 
-  //DISPLAY
-  displayTime(); //display 7-segments display
-
-  //control OLED display 
+void OLEDisplay(){
+    //control OLED display 
   if(scrollMenu){
     //do that only if you are changing menu
     
@@ -240,7 +245,6 @@ void loop(){
     }
     display.display();
     scrollMenu = false; 
-     
   }
 }
 
@@ -254,6 +258,7 @@ void OLEDisplayText(String text) {
   display.println(text);              // Display the text 
 
 }
+
 
 void controlSetBotton(){
   // this method check if the setButton is pressed/long click and performs actions based also on its previous history
@@ -321,7 +326,7 @@ void controlNavigationButton(){
     if(menuActivity >= 3){
       menuActivity = 0;
     }
-    //Serial.println(menuActivity);
+    setPoints();
   }
 
   if(digitalRead(plusButton) == LOW){
@@ -338,12 +343,27 @@ void controlNavigationButton(){
     if(menuActivity <= -1){
       menuActivity = 2;
     }
-    //Serial.println(menuActivity);
+    setPoints();
   }
   if(digitalRead(minButton) == LOW){
     minButtonState = false;
   }
 }
+
+
+void setPoints(){
+    if(menuActivity == 0){
+      digitalWrite(seg_dp_4_digits, HIGH);  // set the two points on :
+    }
+    if(menuActivity == 1){
+      digitalWrite(seg_dp_4_digits, LOW);  // set the two points off
+      digitalWrite(seg_p_4_digits, HIGH); // set the single point on
+    }
+    if(menuActivity == 2){
+      digitalWrite(seg_p_4_digits, LOW); // set the single point off
+    }
+}
+
 
 void settingTime(long currentTime){
   /*this method is executed only when settingTimeMode is on
@@ -461,6 +481,24 @@ void settingTime(long currentTime){
 }
 
 
+void dataValidation(){
+
+  //data type is correct ?
+  if(sec >= 60){
+    minutes += 1;
+    sec = sec % 60;
+    
+    if(minutes >= 60){
+      hours += 1;
+      minutes = minutes % 60;
+      
+      if(hours >= 24){
+        day += 1;
+        hours = 0;
+      }
+    }
+  }
+}
 
 
 void displayTime(){
@@ -512,9 +550,27 @@ void displayTime(){
 }
 
 
+void displayDate(){
+  //this method display actual date on the 7 segments display
+
+  //determinate and display digits of the current year
+  int a2 = year % 10;
+  updateDisplaySec(1, a2);
+  
+  int a1 = (year - a2 )/10;
+  updateDisplaySec(0, a1);
+
+  //determinate and display digits of the current day & month
+  int myDate = day * 100 + month ;
+  sevseg.setNumber(myDate, 2);
+  sevseg.refreshDisplay();
+
+}
+
+
 void printSubMenu(int setSubMenu){
  //this is a test method
- //this method just writes on console 
+ //this method just writes on console live info
   switch (setSubMenu)
   {
     case 0:
@@ -533,6 +589,7 @@ void printSubMenu(int setSubMenu){
       Serial.println("SETTINGS COMPLETED");
       break;
   }
+  
 }
 
 
