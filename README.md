@@ -1,2 +1,2 @@
-# StazioneMeteo
+# Weather Station Project
 Arduino project
