@@ -1,5 +1,5 @@
 # WeatherStation
-Weather Station is an Arduino project where i bult a small Weather Station composed by a clock, a date keeper and a temperature sensor.
+Weather Station is an Arduino project composed by a clock, a date keeper and a temperature sensor.
 
 ## Main Components
  * clock

@@ -8,6 +8,12 @@ SevSeg sevseg;
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
+//library for humidity and temperature sensor
+#include <DHT.h>
+const int sensorPin = 7;
+DHT dht(sensorPin, DHT11);
+
+
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 32 // OLED display height, in pixels
 
@@ -68,6 +74,10 @@ int day = 1;
 int month = 1;
 int year = 19;
 
+//sensor dht var:
+float temperature;
+int humidity;
+
 unsigned long blinkingTime = 500;
 
 //BUTTON VAR
@@ -106,7 +116,8 @@ int menuActivity = 0;
  *  0 : time
  *  1 : date
  *  2 : temperature
- *  3 : go to time
+ *  3 : humidity
+ *  4 : go to time
  */
 
 long setButtonTimer = 0;            // var to calcolate how long was the clik on setBotton, it get the inizial time when setBotton was pressed
@@ -123,6 +134,9 @@ void setup(){
   sec = 0;
   minutes = 0;
   hours = 0;
+
+  //start sensor dht ativity
+  dht.begin();
   
   //declare pin:
   //display (4 digits)
@@ -192,6 +206,8 @@ void loop(){
   if (currentTime - previousTime >= synchronizationTimeInterval){   // if time is up (1 second has pass)
     previousTime = currentTime;   // updates the previous time: previousTime remember when the last sec was pass
     sec += 1;                     //update sec
+    temperature = dht.readTemperature();
+    humidity = dht.readHumidity();
     Serial.println(sec);          //print the actual sec on the consol, just for having a log/time rappresentation
   }
 
@@ -240,7 +256,10 @@ void OLEDisplay(){
         OLEDisplayText("DATE");
         break;
       case 2:
-        OLEDisplayText("TEMP");
+        OLEDisplayText("DEGREES");
+        break;
+      case 3:
+        OLEDisplayText("HUMIDITY");
         break;
     }
     display.display();
@@ -323,7 +342,7 @@ void controlNavigationButton(){
     Serial.println("change feature");
     scrollMenu = true;
     menuActivity = menuActivity + 1;
-    if(menuActivity >= 3){
+    if(menuActivity >= 4){
       menuActivity = 0;
     }
     setPoints();
@@ -341,7 +360,7 @@ void controlNavigationButton(){
     scrollMenu = true;
     menuActivity = menuActivity - 1;
     if(menuActivity <= -1){
-      menuActivity = 2;
+      menuActivity = 3;
     }
     setPoints();
   }
@@ -495,6 +514,24 @@ void dataValidation(){
       if(hours >= 24){
         day += 1;
         hours = 0;
+        if(day > 28 && month == 2){
+          month = month+1;
+          day = 1;
+        }
+        if(day > 30){
+          if(month== 4 || month== 9 || month== 11){
+            month = month+1;
+            day = 1;
+          }
+        }
+        if(day > 31){
+          month = month+1;
+          day = 1;
+          if(month > 12){
+            month = 1;
+            year = year +1;
+          }
+        }
       }
     }
   }
