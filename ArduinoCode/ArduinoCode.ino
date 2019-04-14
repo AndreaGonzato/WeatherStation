@@ -194,8 +194,8 @@ void setup(){
   }
 
   temperature = dht.readTemperature();
-  Serial.println(temperature);
   humidity = dht.readHumidity();
+  Serial.println(humidity);
   
   //display somthing on OLED display
   OLEDisplayText("TIME");
@@ -214,7 +214,7 @@ void loop(){
       lastSamplingSensor = currentTime;
       temperature = dht.readTemperature();
       humidity = dht.readHumidity();
-      Serial.println(temperature);
+      Serial.println(humidity);
     }
     
     Serial.println(sec);          //print the actual sec on the consol, just for having a log/time rappresentation
@@ -245,7 +245,7 @@ void loop(){
       displayTemperature();
       break;
     case 3:
-      displayTime();
+      displayHumidity();
       break;
   }
   
@@ -632,6 +632,14 @@ void displayTemperature(){
   sevseg.setNumber((int)temperature);
   sevseg.refreshDisplay();
   
+}
+
+void displayHumidity(){
+  updateDisplaySec(0, 10);
+  updateDisplaySec(1, 10);
+  sevseg.setNumber(humidity);
+  sevseg.refreshDisplay();
+
 }
 
 void printSubMenu(int setSubMenu){
