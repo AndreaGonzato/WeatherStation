@@ -632,8 +632,6 @@ void displayTemperature(){
   sevseg.setNumber((int)temperature);
   sevseg.refreshDisplay();
   
-
-  
 }
 
 void printSubMenu(int setSubMenu){
