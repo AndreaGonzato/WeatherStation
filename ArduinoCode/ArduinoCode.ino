@@ -25,8 +25,8 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 //CONSTANTS
 const long longPressTime = 1000;    // it is just a const, that indicate how many millisec is a long click for the system
-
-
+const long samplingSensorInterval = 30000;
+unsigned long lastSamplingSensor= 0;
 // DIGITAL PIN
 
 //DISPLAY
@@ -192,11 +192,15 @@ void setup(){
     Serial.println(F("SSD1306 allocation failed"));
     for(;;); // Don't proceed, loop forever
   }
+
+  temperature = dht.readTemperature();
+  Serial.println(temperature);
+  humidity = dht.readHumidity();
   
   //display somthing on OLED display
   OLEDisplayText("TIME");
   display.display();
-  
+
 }
 
 void loop(){
@@ -206,8 +210,13 @@ void loop(){
   if (currentTime - previousTime >= synchronizationTimeInterval){   // if time is up (1 second has pass)
     previousTime = currentTime;   // updates the previous time: previousTime remember when the last sec was pass
     sec += 1;                     //update sec
-    temperature = dht.readTemperature();
-    humidity = dht.readHumidity();
+    if(currentTime - lastSamplingSensor > samplingSensorInterval){
+      lastSamplingSensor = currentTime;
+      temperature = dht.readTemperature();
+      humidity = dht.readHumidity();
+      Serial.println(temperature);
+    }
+    
     Serial.println(sec);          //print the actual sec on the consol, just for having a log/time rappresentation
   }
 
@@ -233,6 +242,9 @@ void loop(){
       displayDate();
       break;
     case 2:
+      displayTemperature();
+      break;
+    case 3:
       displayTime();
       break;
   }
@@ -604,6 +616,25 @@ void displayDate(){
 
 }
 
+
+void displayTemperature(){
+  //determinate and display digits of the current temperature
+
+  //determinate and display digits of the current temperature
+  int temperatureNewForm = abs((int)(temperature*100));
+  temperatureNewForm = temperatureNewForm -abs(((int) temperature)*100);
+  int t2 = temperatureNewForm % 10;
+  updateDisplaySec(1, t2);
+  
+  int t1 = (temperatureNewForm - t2 )/10;
+  updateDisplaySec(0, t1);
+
+  sevseg.setNumber((int)temperature);
+  sevseg.refreshDisplay();
+  
+
+  
+}
 
 void printSubMenu(int setSubMenu){
  //this is a test method
