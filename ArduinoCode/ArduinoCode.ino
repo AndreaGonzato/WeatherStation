@@ -92,12 +92,18 @@ boolean displaySec = true;
 boolean displayMin = true;
 boolean displayHours = true;
 
+boolean displayDay = true;
+boolean displayMonth = true;
+boolean displayYear = true;
+
+
 //just for the right evulution of the script (I have to find a better way)
 boolean avoidIfPlus = true;
 boolean avoidIfMin = true;
 
 //variable that indicate if we are setting time of the clock (it happend when the setBotton had a long click)
 boolean settingTimeMode = false;
+boolean settingDateMode = false;
 
 //variable that indicate what we are setting:
 int setingTimeSubMenu = 0;
@@ -109,10 +115,19 @@ int setingTimeSubMenu = 0;
  *  3 : sec
  *  4 : we have finished to set evrything, now immidatly go to state 0  (4 --> 0)
  */
+int setingDateSubMenu = 0;
+//Here there is a leggend for how this var work:
+/*
+ *  0 : we are setting nothing
+ *  1 : day
+ *  2 : month
+ *  3 : year
+ *  4 : we have finished to set evrything, now immidatly go to state 0  (4 --> 0)
+ */
 int menuActivity = 0;
 //Here there is a leggend for how this var work:
 /*
- *  -1: go to temperature
+ *  -1: go to humidity
  *  0 : time
  *  1 : date
  *  2 : temperature
@@ -214,17 +229,25 @@ void loop(){
       lastSamplingSensor = currentTime;
       temperature = dht.readTemperature();
       humidity = dht.readHumidity();
-      Serial.println(humidity);
+      Serial.println(month);
     }
     
     Serial.println(sec);          //print the actual sec on the consol, just for having a log/time rappresentation
   }
 
-  controlSetBotton();         //control what to do when the setButton receives a click/long click
+  if(menuActivity == 0){
+    controlSetBottonTime();         //control what to do when the setButton receives a click/long click
+  }
+  if(menuActivity == 1){
+    controlSetBottonDate();         //control what to do when the setButton receives a click/long click
+  }
   controlNavigationButton();  //control what to do when the minButton or plusButton receives a click/long click
   
   if(settingTimeMode){
     settingTime(currentTime);  //control the system during the setting process.
+  }
+  if(settingDateMode){
+    settingDate(currentTime);
   }
 
   //controol that the data type are right (e.g. seconds > 60)
@@ -291,7 +314,7 @@ void OLEDisplayText(String text) {
 }
 
 
-void controlSetBotton(){
+void controlSetBottonTime(){
   // this method check if the setButton is pressed/long click and performs actions based also on its previous history
   
   if(digitalRead(setButton) == HIGH){
@@ -344,10 +367,64 @@ void controlSetBotton(){
   }
 }
 
+void controlSetBottonDate(){
+// this method check if the setButton is pressed/long click and performs actions based also on its previous history
+  
+  if(digitalRead(setButton) == HIGH){
+    //the set_button is pressed
+    
+    if (setButtonState == false) {
+      //at the first moment when the setBotton is press do this:
+      setButtonTimer = millis();  //take the initial time when you pressed the set botton
+      setButtonState = true;      //update setButtonState
+
+      // if you are already in the settingTimeMenu and you have pressed another time set
+      if(setingDateSubMenu > 0){
+        setingDateSubMenu += 1;
+        
+        switch (setingDateSubMenu)
+        {
+          case 2:
+            displayDay = true;//if you are setting minutes, now you can fully display hours
+            break;
+          case 3:
+            displayMonth = true;  //if you are setting sec, now you can fully display minutes
+            break;
+          case 4:
+            displayYear = true;  //if you finisched to set, now you can fully display secondi
+            break;
+        }
+        
+      }
+      printSubMenu(setingTimeSubMenu);
+    }
+
+    // check if the setting menu is over
+    if(setingDateSubMenu >= 4){
+      //this means the setting menu is over, you have set your clock
+      setingDateSubMenu = 0;
+      settingDateMode = false;
+      displayOn = true;
+      
+    }
+
+    //check if the setButton had a long click
+    if ((millis() - setButtonTimer > longPressTime) && (settingDateMode == false)) {
+      //setButton had a long click
+      settingDateMode = true;  // now we are in the setting time mode
+      setingDateSubMenu = 1;
+      Serial.println("LONG CLICK");
+      printSubMenu(setingTimeSubMenu);
+    }
+  }else{
+    setButtonState = false;     // setButton in not press
+  }
+
+}
 void controlNavigationButton(){
   // this method check if the plusButton/minButton are pressed/long click and performs actions based also on its previous history
   
-  if(!plusButtonState && !settingTimeMode && digitalRead(plusButton) == HIGH){
+  if(!plusButtonState && !settingTimeMode && !settingDateMode && digitalRead(plusButton) == HIGH){
     //the plusButton is pressed and I'm not setting things
     
     plusButtonState = true;
@@ -364,7 +441,7 @@ void controlNavigationButton(){
     plusButtonState = false;
   }
   
-  if(!minButtonState && !settingTimeMode && digitalRead(minButton) == HIGH){
+  if(!minButtonState && !settingTimeMode && !settingDateMode && digitalRead(minButton) == HIGH){
     //the minButton is pressed and I'm not setting things
     
     minButtonState = true;
@@ -511,6 +588,126 @@ void settingTime(long currentTime){
   
 }
 
+void settingDate(long currentTime){
+  
+/*this method is executed only when settingDateMode is on
+    this method has 3 main parts:
+    1 - CONTROL PLUS BUTTON
+    2 - CONTROL MIN BOTTON
+    3 - BLINK what we are settings
+  */
+  
+    
+    //CONTROL PLUS BUTTON
+    if((digitalRead(plusButton) == HIGH) && (avoidIfPlus)){
+      // plus button is press
+      Serial.println("+ PLUS");//TEST
+      avoidIfPlus = false;
+      switch (setingDateSubMenu)
+      {
+        case 1:
+          //add day
+          day += 1;
+          if(day > 31){
+            day = 1;
+          }
+          break;
+          
+        case 2:
+          //add month
+          month += 1;
+          if(month > 12){
+            month = 1;
+          }
+          break;
+
+        case 3:
+          //add year
+          year += 1;
+          if(year > 99){
+            year = 0;
+          }
+          break;
+      }
+    }
+    else{
+       if(digitalRead(plusButton) == LOW){
+         avoidIfPlus = true;
+       }    
+    }
+
+
+    //CONTROL MIN BUTTON
+    if((digitalRead(minButton) == HIGH) && (avoidIfMin)){
+      //min button is press in the menù mode
+      Serial.println("- MIN");//TEST
+      avoidIfMin = false;
+      switch (setingDateSubMenu)
+      {
+        case 1:
+          //decrease day
+          day -= 1;
+          if(day <= 0)
+             day = 31;
+          break;
+          
+        case 2:
+          //decrease month
+          month -= 1;
+          if(month <= 0){
+            month = 12;
+          }
+          break;
+
+        case 3:
+          //decrease year
+          year -= 1;
+          if(year < 0)
+            year = 99;
+          break;
+      }
+    }
+    else{
+       if(digitalRead(minButton) == LOW){
+         avoidIfMin = true;
+       }    
+    }
+
+
+    
+    // I'm in the menù mode, so blink what are you settings...
+    switch (setingDateSubMenu)
+      {
+        case 1:
+          //blink day
+          if(currentTime - previousTimeBlink >= blinkingTime){
+            displayDay = !displayDay;
+            previousTimeBlink = currentTime;
+          }
+          break;
+        case 2:
+          //blink month
+          displayDay = true;  // now you can display day
+          if(currentTime - previousTimeBlink >= blinkingTime){
+            displayMonth = !displayMonth ;
+            previousTimeBlink = currentTime;
+          }
+          break;
+
+        case 3:
+          //blink year
+          displayMonth = true;
+          if(currentTime - previousTimeBlink >= blinkingTime){
+            displayYear = !displayYear;
+            previousTimeBlink = currentTime;
+          }
+          
+          break;
+
+        case 4:
+          displayYear = true;
+      }
+}
 
 void dataValidation(){
 
@@ -603,16 +800,66 @@ void displayDate(){
   //this method display actual date on the 7 segments display
 
   //determinate and display digits of the current year
-  int a2 = year % 10;
-  updateDisplaySec(1, a2);
-  
-  int a1 = (year - a2 )/10;
-  updateDisplaySec(0, a1);
+  if(displayYear){
+    int a2 = year % 10;
+    updateDisplaySec(1, a2);
+    
+    int a1 = (year - a2 )/10;
+    updateDisplaySec(0, a1);
+  }else{
+    updateDisplaySec(0, 10);
+    updateDisplaySec(1, 10);
+  }
 
-  //determinate and display digits of the current day & month
-  int myDate = day * 100 + month ;
-  sevseg.setNumber(myDate, 2);
-  sevseg.refreshDisplay();
+  
+  if(displayDay && displayMonth){
+    //determinate and display digits of the current day & month
+
+    int d1 = day % 10;
+    int d2 = (day - d1) / 10;
+    int m1 = month % 10;
+    int m2 = (month -m1) / 10;
+    char c1 = (char)d2;
+    char c2 = (char)d1;
+    char c3 = (char)m2;
+    char c4 = (char)m1;
+    char str[5] = {' ', ' ','.', ' ', ' '};
+    str[0] = c1+'0';
+    str[1] = c2+'0';
+    str[3] = c3+'0';
+    str[4] = c4+'0';
+       
+    sevseg.setChars(str);
+    sevseg.refreshDisplay();
+  }else{
+    if(!displayDay){
+      //int myDate =  month ;
+      //sevseg.setNumber(myDate, 2);
+      //sevseg.refreshDisplay();
+      int m1 = month % 10;
+      int m2 = (month -m1) / 10;
+      char c3 = (char)m2;
+      char c4 = (char)m1;
+      char str[5] = {' ', ' ','.', ' ', ' '};
+      str[3] = c3+'0';
+      str[4] = c4+'0';
+
+      sevseg.setChars(str);
+      sevseg.refreshDisplay();
+    }
+    if(!displayMonth){
+      int m1 = day % 10;
+      int m2 = (day - m1) / 10;
+      char c1 = (char)m2;
+      char c2 = (char)m1;
+      char str[5] = {' ', ' ','.', ' ', ' '};
+      str[0] = c1+'0';
+      str[1] = c2+'0';
+        
+      sevseg.setChars(str);
+      sevseg.refreshDisplay();
+    }
+  }
 
 }
 
@@ -629,7 +876,7 @@ void displayTemperature(){
   int t1 = (temperatureNewForm - t2 )/10;
   updateDisplaySec(0, t1);
 
-  sevseg.setNumber((int)temperature);
+  sevseg.setNumber((int)temperature,0);
   sevseg.refreshDisplay();
   
 }
