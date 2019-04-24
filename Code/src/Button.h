@@ -8,19 +8,27 @@
 
 #include "Arduino.h"
 #include "Mode.h"
+#include "MyTime.h"
 
 class Button
 {
 public:
 	Button(int pin, String n);
 
-    void update(Mode *mode);
+    void update(Mode *mode, MyTime *myTime);
+
     bool getIsPressed();
+    bool getSettingMode();
 
 private:
     int pinButton = -1;
     bool isPressed = false;
     String nameButton = "";
+
+    long setButtonTimer;   
+    const long longPressTime = 1000;
+    
+    bool settingMode = false;
 
 
 

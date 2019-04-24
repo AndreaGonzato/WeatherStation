@@ -17,6 +17,7 @@ String Mode::getActiveMode(){
 }
 
 void Mode::scrollRight(){
+    updateOLED = true;
     index += 1;
     if(index > maxIndexValue){
         index = 0;
@@ -24,9 +25,62 @@ void Mode::scrollRight(){
 }
 
 void Mode::scrollLeft(){
+    updateOLED = true;
     index -= 1;
     if(index < 0){
         index = maxIndexValue;
     }
 }
 
+void Mode::setUpdateOLED(bool u){
+    updateOLED = u;
+}
+
+bool Mode::getUpdateOLED(){
+    return updateOLED;
+}
+
+bool Mode::getSettingActivity(){
+    return settingActivity;
+}
+
+void Mode::setSettingActivity(bool s){
+    if(index != 2 && index != 3) //you can not set DEGREES & HUMIDITY
+        settingActivity = s;
+}
+
+String Mode::getActualSubMenu(){
+    return subMenu[index][indexSubMenu];
+}
+
+int Mode::getIndex(){
+    return index;
+}
+void Mode::scrollSubMenu(){
+    if(index == 0){
+        //"TIME" sub menu
+        indexSubMenu += 1;
+        settingActivity = true;
+        Serial.println(getActualSubMenu());
+        if(indexSubMenu>3){
+            indexSubMenu = 0;
+            settingActivity = false;
+        }
+    }
+    if(index == 1){
+        //"DATE" sub menu
+        indexSubMenu += 1;
+        settingActivity = true;
+        Serial.println(getActualSubMenu());
+        if(indexSubMenu>4){
+            indexSubMenu = 0;
+            settingActivity = false;
+        }
+    }
+    
+}
+
+
+int Mode::getIndexSubMenu(){
+    return indexSubMenu;
+}
