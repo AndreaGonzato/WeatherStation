@@ -21,20 +21,17 @@ controllSingleDigitDisplay::controllSingleDigitDisplay()
     }
 }
 
-void controllSingleDigitDisplay::myUpdate(int num, bool on){
+void controllSingleDigitDisplay::myUpdate(int num){
     if(num>=0){
-        if(on){
-            int n1 = num%10;
-            int n2 = (num-n1)/10;
-            updateDisplay(0,n2);
-            updateDisplay(1,n1);
-        }else{
-            //close the display, set evry segments to LOW
-            updateDisplay(0,10);
-            updateDisplay(1,10);
-        }
+        
+        int n1 = num%10;
+        int n2 = (num-n1)/10;
+        updateDisplay(0,n2);
+        updateDisplay(1,n1);
     }else{
-        Serial.println("ERR - controllSingleDigitDisplay.update: num<0");
+        updateDisplay(0,10);
+        updateDisplay(1,10);
+        //Serial.println("ERR - controllSingleDigitDisplay.update: num<0");
     }
 }
 

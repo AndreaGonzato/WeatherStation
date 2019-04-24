@@ -22,7 +22,6 @@ void Button::update(Mode *mode, MyTime *myTime)
             //one button is press
 
             Serial.println(nameButton); //print what button is pressed
-            Serial.println(mode->getSettingActivity());
 
             if(mode->getSettingActivity()){
                 //setting
@@ -39,28 +38,69 @@ void Button::update(Mode *mode, MyTime *myTime)
                 switch(mode->getIndexSubMenu())
                 {
                     case 1:
-                        if(nameButton.equals("PLUS")){
-                            myTime->setMyHours(myTime->getMyHours()+1);
+                        if(mode->getIndex() == 0){
+                            //TIME
+                            if(nameButton.equals("PLUS")){
+                                myTime->setMyHours(myTime->getMyHours()+1);
+                            }
+                            if(nameButton.equals("MIN")){
+                                myTime->setMyHours(myTime->getMyHours()-1);
+                            }
                         }
-                        if(nameButton.equals("MIN")){
-                            myTime->setMyHours(myTime->getMyHours()-1);
+                        if(mode->getIndex() == 1){
+                            //DATE
+                            if(nameButton.equals("PLUS")){
+                                myTime->setMyDay(myTime->getMyDay()+1);
+                            }
+                            if(nameButton.equals("MIN")){
+                                myTime->setMyDay(myTime->getMyDay()-1);
+                            }
                         }
+	                    myTime->validateTimeDuringSettings();
+                        
                         break;
                     case 2:
-                        if(nameButton.equals("PLUS")){
-                            myTime->setMyMinutes(myTime->getMyMinutes()+1);
+                        if(mode->getIndex() == 0){
+                            //TIME
+                            if(nameButton.equals("PLUS")){
+                                myTime->setMyMinutes(myTime->getMyMinutes()+1);
+                            }
+                            if(nameButton.equals("MIN")){
+                                myTime->setMyMinutes(myTime->getMyMinutes() -1);
+                            }
                         }
-                        if(nameButton.equals("MIN")){
-                            myTime->setMyMinutes(myTime->getMyMinutes() -1);
+                        if(mode->getIndex() == 1){
+                            //DATE
+                            if(nameButton.equals("PLUS")){
+                                myTime->setMyMonth(myTime->getMyMonth()+1);
+                            }
+                            if(nameButton.equals("MIN")){
+                                myTime->setMyMonth(myTime->getMyMonth()-1);
+                            }
                         }
+                        myTime->validateTimeDuringSettings();
+
                         break;
                     case 3:
-                        if(nameButton.equals("PLUS")){
-                            myTime->setMySec(myTime->getMySec()+1);
+                        if(mode->getIndex() == 0){
+                            if(nameButton.equals("PLUS")){
+                                myTime->setMySec(myTime->getMySec()+1);
+                            }
+                            if(nameButton.equals("MIN")){
+                                myTime->setMySec(myTime->getMySec() -1);
+                            }
                         }
-                        if(nameButton.equals("MIN")){
-                            myTime->setMySec(myTime->getMySec() -1);
+                        if(mode->getIndex() == 1){
+                            //DATE
+                            if(nameButton.equals("PLUS")){
+                                myTime->setMyYear(myTime->getMyYear()+1);
+                            }
+                            if(nameButton.equals("MIN")){
+                                myTime->setMyYear(myTime->getMyYear()-1);
+                            }
                         }
+                        myTime->validateTimeDuringSettings();
+
                         break;
                 }
                 
@@ -73,7 +113,6 @@ void Button::update(Mode *mode, MyTime *myTime)
                 if(nameButton != "SET")
                     Serial.println(mode->getActiveMode());
                 if(nameButton == "SET"){
-                    Serial.println("TEST");
                     setButtonTimer = millis();  //take the initial time when you pressed the set botton
                 }
             }

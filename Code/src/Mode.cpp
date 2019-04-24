@@ -65,6 +65,7 @@ void Mode::scrollSubMenu(){
         if(indexSubMenu>3){
             indexSubMenu = 0;
             settingActivity = false;
+            displayWhatAreYouSetting = true;
         }
     }
     if(index == 1){
@@ -72,9 +73,10 @@ void Mode::scrollSubMenu(){
         indexSubMenu += 1;
         settingActivity = true;
         Serial.println(getActualSubMenu());
-        if(indexSubMenu>4){
+        if(indexSubMenu>3){
             indexSubMenu = 0;
             settingActivity = false;
+            displayWhatAreYouSetting = true;
         }
     }
     
@@ -83,4 +85,13 @@ void Mode::scrollSubMenu(){
 
 int Mode::getIndexSubMenu(){
     return indexSubMenu;
+}
+
+
+bool Mode::getDisplayWhatAreYouSetting(){
+    return displayWhatAreYouSetting;
+}
+
+void Mode::setDisplayWhatAreYouSetting(bool d){
+    displayWhatAreYouSetting = d;
 }

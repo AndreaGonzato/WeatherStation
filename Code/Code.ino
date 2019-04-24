@@ -104,7 +104,7 @@ void setup(){
 }
 
 void loop(){
-    myTime.update();
+    myTime.update(&mode);
     setButton.update(&mode, &myTime);
     minButton.update(&mode, &myTime);
     plusButton.update(&mode, &myTime);
@@ -117,10 +117,7 @@ void loop(){
       humidity = dht.readHumidity();
       Serial.println(temperature);
     }
-
-
-      
-
+    
     //display on 7-segments
     displayOn7Segments();
 
@@ -134,17 +131,64 @@ void loop(){
 
 }
 void displayOn7Segments(){
+    int numToDisplayOnSingleDigit = -1;
+    // if at the end thi var will be negative, then will not display nothing
+    
     if(mode.getActiveMode() == "TIME"){
         digitalWrite(seg_dp_4_digits, HIGH);  // set the two points on :
-        int myTimeToDisplay = myTime.getMyHours() * 100 + myTime.getMyMinutes() ;
-        sevseg.setNumber(myTimeToDisplay, 4);
-        sevseg.refreshDisplay();
-        singleDigitDisplay.myUpdate(myTime.getMySec(), true);
+        
+        if(!mode.getSettingActivity() || mode.getDisplayWhatAreYouSetting()){
+            int myTimeToDisplay = myTime.getMyHours() * 100 + myTime.getMyMinutes() ;
+            sevseg.setNumber(myTimeToDisplay, 4);
+            sevseg.refreshDisplay();
+            numToDisplayOnSingleDigit = myTime.getMySec();
+        }else{
+            switch (mode.getIndexSubMenu()){
+                case 1: //do not show hours    
+                    update7SegDiplayTime(-1, myTime.getMyMinutes());           
+                    numToDisplayOnSingleDigit = myTime.getMySec();
+                    break;
+                case 2: //do not show minutes    
+                    update7SegDiplayTime(myTime.getMyHours(), -1);           
+                    numToDisplayOnSingleDigit = myTime.getMySec();
+                    break;
+                case 3: //do not show seconds    
+                    update7SegDiplayTime(myTime.getMyHours(), myTime.getMyMinutes());           
+                    numToDisplayOnSingleDigit = -1;
+                    break;
+                
+            }
+            
+            
+            
+        }
+        
+        
     }
     if(mode.getActiveMode() == "DATE"){
+        Serial.println(mode.getDisplayWhatAreYouSetting());
         digitalWrite(seg_dp_4_digits, LOW);  // set the two points off :
-        update7SegDiplayDate(myTime.getMyDay(), myTime.getMyMonth());
-        singleDigitDisplay.myUpdate(myTime.getMyYear(), true);
+        if(!mode.getSettingActivity() || mode.getDisplayWhatAreYouSetting()){
+            //display all
+            update7SegDiplayDate(myTime.getMyDay(), myTime.getMyMonth());
+            numToDisplayOnSingleDigit = myTime.getMyYear();
+        }else{
+            switch (mode.getIndexSubMenu()){
+                case 1: //do not show day
+                    update7SegDiplayDate(myTime.getMyDay()*-1, myTime.getMyMonth());
+                    numToDisplayOnSingleDigit = myTime.getMyYear();
+                    break;
+                case 2: //do not show month
+                    update7SegDiplayDate(myTime.getMyDay(), myTime.getMyMonth()*-1);
+                    numToDisplayOnSingleDigit = myTime.getMyYear();
+                    break;
+               case 3: //do not show month
+                    update7SegDiplayDate(myTime.getMyDay(), myTime.getMyMonth());
+                    numToDisplayOnSingleDigit = myTime.getMyYear()*-1;
+                    break;
+            }
+        }
+        
     }
     if(mode.getActiveMode() == "DEGREES"){
         digitalWrite(seg_dp_4_digits, LOW);  // set the two points off :
@@ -152,17 +196,16 @@ void displayOn7Segments(){
         sevseg.setNumber(myTemperatureToDisplay, 0);
         sevseg.refreshDisplay();
         int myDecimalTemperature = (int)((temperature*100) - (myTemperatureToDisplay*100));
-        //singleDigitDisplay.myUpdate(myDecimalTemperature, true);
-        singleDigitDisplay.updateDisplay(0,10);
-        singleDigitDisplay.updateDisplay(1,10);
+        numToDisplayOnSingleDigit = abs(myDecimalTemperature);
     }
     if(mode.getActiveMode() == "HUMIDITY"){
         digitalWrite(seg_dp_4_digits, LOW);  // set the two points off :
         sevseg.setNumber(humidity);
         sevseg.refreshDisplay();
-        //singleDigitDisplay.updateDisplay(0,10);
-        //singleDigitDisplay.updateDisplay(1,10);
     }
+    
+    singleDigitDisplay.myUpdate(numToDisplayOnSingleDigit);
+    
 }
 
 void OLEDisplayText(String text) {
@@ -181,17 +224,44 @@ void update7SegDiplayDate(int day, int month){
     int d2 = (day - d1) / 10;
     char c2 = (char)d1;
     char c1 = (char)d2;
-
     int m1 = month % 10;
     int m2 = (month - m1) / 10;
     char c4 = (char)m1;
     char c3 = (char)m2;
     
     char str[5] = {' ', ' ','.',' ', ' '};
-    str[0] = c1+'0';
-    str[1] = c2+'0';
-    str[3] = c3+'0';
-    str[4] = c4+'0';
+    if(day>= 0){
+        str[0] = c1+'0';
+        str[1] = c2+'0';
+    }
+    if(month>= 0){
+        str[3] = c3+'0';
+        str[4] = c4+'0';
+    }
+    sevseg.setChars(str);
+    sevseg.refreshDisplay();
+}
+
+
+void update7SegDiplayTime(int hour, int minutes){
+    int d1 = hour % 10;
+    int d2 = (hour - d1) / 10;
+    char c2 = (char)d1;
+    char c1 = (char)d2;
+    int m1 = minutes % 10;
+    int m2 = (minutes - m1) / 10;
+    char c4 = (char)m1;
+    char c3 = (char)m2;
+    
+    char str[4] = {' ', ' ',' ', ' '};
+    if(hour>= 0){
+        str[0] = c1+'0';
+        str[1] = c2+'0';
+    }
+    if(minutes>= 0){
+        str[2] = c3+'0';
+        str[3] = c4+'0';
+    }
     
     sevseg.setChars(str);
     sevseg.refreshDisplay();

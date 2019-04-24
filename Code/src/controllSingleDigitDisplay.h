@@ -13,7 +13,7 @@ class controllSingleDigitDisplay
 public:
 	controllSingleDigitDisplay(); //constructor
 
-    void myUpdate(int num, bool on);
+    void myUpdate(int num);
     void updateDisplay(int numDisplay, int num);
 
 private:

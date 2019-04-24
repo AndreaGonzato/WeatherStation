@@ -30,6 +30,9 @@ public:
     bool getSettingActivity();
     void setSettingActivity(bool s);
 
+    bool getDisplayWhatAreYouSetting();
+    void setDisplayWhatAreYouSetting(bool d);
+
 
 private:
     String activeMode = "";
@@ -37,19 +40,14 @@ private:
     int index; //index:  0       1         2           3         4
     int maxIndexValue = 4;
 
-    String subMenu[5][4] = {    {"SET-NOTHING","SET:HOURS", "SET-MINUTES", "SET:SEC"},
-                                {"SET-NOTHING","SET:HOURS", "SET-MINUTES", "SET:SEC"},
+    String subMenu[5][4] = {    {"SET-NOTHING","SET-HOURS", "SET-MINUTES", "SET-SEC"},
+                                {"SET-NOTHING","SET-DAY", "SET-MONTH", "SET-YEAR"},
                                 {"","","",""},
                                 {"","","",""},
                                 {"","","",""},
-
                             };
     int indexSubMenu = 0;
-
-    String subMenuDate[5] = {"NOTHING","DAY", "MONTH", "YEAR", "END SETTING"};
-    int indexSubMenuDate = 0;// 0         1         2        3          4
-
-
+    bool displayWhatAreYouSetting = true; //for blinking
 
     bool updateOLED = false;  //indicates if the oled screen needs to be updated
     bool settingActivity = false; //you are setting somthing if is true
