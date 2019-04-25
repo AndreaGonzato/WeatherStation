@@ -61,7 +61,7 @@ void Mode::scrollSubMenu(){
         //"TIME" sub menu
         indexSubMenu += 1;
         settingActivity = true;
-        Serial.println(getActualSubMenu());
+        //Serial.println(getActualSubMenu());
         if(indexSubMenu>3){
             indexSubMenu = 0;
             settingActivity = false;
@@ -70,6 +70,17 @@ void Mode::scrollSubMenu(){
     }
     if(index == 1){
         //"DATE" sub menu
+        indexSubMenu += 1;
+        settingActivity = true;
+        //Serial.println(getActualSubMenu());
+        if(indexSubMenu>3){
+            indexSubMenu = 0;
+            settingActivity = false;
+            displayWhatAreYouSetting = true;
+        }
+    }
+    if(index == 4){
+        //"ALLARM" sub menu
         indexSubMenu += 1;
         settingActivity = true;
         Serial.println(getActualSubMenu());
@@ -92,6 +103,22 @@ bool Mode::getDisplayWhatAreYouSetting(){
     return displayWhatAreYouSetting;
 }
 
+String Mode::getModes(int i){
+    return modes[i];
+}
+
 void Mode::setDisplayWhatAreYouSetting(bool d){
     displayWhatAreYouSetting = d;
 }
+ void Mode::switchAlarmStatus(){
+    if(modes[4] == "ALLARM OFF"){
+        modes[4] = "ALLARM ON";
+        Serial.println("ALLARM ON");
+    }else{
+        if(modes[4] == "ALLARM ON"){
+            modes[4] = "ALLARM OFF";
+            Serial.println("ALLARM OFF");
+        }
+    }
+    updateOLED = true;
+ }

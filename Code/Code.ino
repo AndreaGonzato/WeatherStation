@@ -18,6 +18,10 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 #include "SevSeg.h"
 SevSeg sevseg;
 
+const int allarmPinIO= 9;
+const int allarmPin5V= 11;
+const int alarmFrequency = 380;
+
 //7-segments 4 digit display
 const int seg_a_4_digits = 49;
 const int seg_b_4_digits = 47;
@@ -36,7 +40,7 @@ const int d3 = 51; //Digit 3
 const int d4 = 50; //Digit 4
 
 #include "src/MyTime.h"
-MyTime myTime = MyTime();
+MyTime myTime = MyTime(allarmPinIO, allarmPin5V, alarmFrequency);
 
 #include "src/Mode.h"
 Mode mode = Mode();
@@ -59,6 +63,9 @@ unsigned long samplingSensorInterval = 20000;
 
 void setup(){
     //declare pin:
+    //allarm pin:
+    pinMode(allarmPinIO, OUTPUT);
+    pinMode(allarmPin5V, OUTPUT); 
     //display (4 digits)
     pinMode(seg_a_4_digits, OUTPUT);
     pinMode(seg_b_4_digits, OUTPUT);
@@ -203,6 +210,34 @@ void displayOn7Segments(){
         sevseg.setNumber(humidity);
         sevseg.refreshDisplay();
     }
+    if(mode.getActiveMode() == "ALLARM OFF" || mode.getActiveMode() == "ALLARM ON" ){
+        digitalWrite(seg_dp_4_digits, HIGH);  // set the two points on :
+        
+        if(!mode.getSettingActivity() || mode.getDisplayWhatAreYouSetting()){
+            int myTimeAllarmToDisplay = myTime.getMyHoursAllarm() * 100 + myTime.getMyMinutesAllarm() ;
+            sevseg.setNumber(myTimeAllarmToDisplay, 4);
+            sevseg.refreshDisplay();
+            numToDisplayOnSingleDigit = myTime.getMySecAllarm();
+        }else{
+            switch (mode.getIndexSubMenu()){
+                case 1: //do not show hours    
+                    update7SegDiplayTime(-1, myTime.getMyMinutesAllarm());           
+                    numToDisplayOnSingleDigit = myTime.getMySecAllarm();
+                    break;
+                case 2: //do not show minutes    
+                    update7SegDiplayTime(myTime.getMyHoursAllarm(), -1);           
+                    numToDisplayOnSingleDigit = myTime.getMySecAllarm();
+                    break;
+                case 3: //do not show seconds    
+                    update7SegDiplayTime(myTime.getMyHoursAllarm(), myTime.getMyMinutesAllarm());           
+                    numToDisplayOnSingleDigit = -1;
+                    break;
+                
+            }
+  
+        }
+
+    }
     
     singleDigitDisplay.myUpdate(numToDisplayOnSingleDigit);
     
@@ -265,4 +300,12 @@ void update7SegDiplayTime(int hour, int minutes){
     
     sevseg.setChars(str);
     sevseg.refreshDisplay();
+}
+
+void startAllarm(){
+    tone(allarmPin5V, alarmFrequency);
+}
+
+void endAllarm(){
+    noTone(allarmPin5V);
 }

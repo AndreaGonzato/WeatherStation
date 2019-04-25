@@ -14,6 +14,7 @@ public:
 	Mode();
 
     String getActiveMode();
+    String getModes(int i);
     void scrollRight();
     void scrollLeft();
 
@@ -32,11 +33,12 @@ public:
 
     bool getDisplayWhatAreYouSetting();
     void setDisplayWhatAreYouSetting(bool d);
+    void switchAlarmStatus();
 
 
 private:
     String activeMode = "";
-    String modes[5] = {"TIME", "DATE", "DEGREES", "HUMIDITY", "ALLARM"};
+    String modes[5] = {"TIME", "DATE", "DEGREES", "HUMIDITY", "ALLARM OFF"};
     int index; //index:  0       1         2           3         4
     int maxIndexValue = 4;
 
@@ -44,7 +46,7 @@ private:
                                 {"SET-NOTHING","SET-DAY", "SET-MONTH", "SET-YEAR"},
                                 {"","","",""},
                                 {"","","",""},
-                                {"","","",""},
+                                {"SET-NOTHING","SET-HOURS", "SET-MINUTES", "SET-SEC"},
                             };
     int indexSubMenu = 0;
     bool displayWhatAreYouSetting = true; //for blinking

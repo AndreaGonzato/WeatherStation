@@ -56,6 +56,15 @@ void Button::update(Mode *mode, MyTime *myTime)
                                 myTime->setMyDay(myTime->getMyDay()-1);
                             }
                         }
+                        if(mode->getIndex() == 4){
+                            //ALLARM
+                            if(nameButton.equals("PLUS")){
+                                myTime->setMyHoursAllarm(myTime->getMyHoursAllarm()+1);
+                            }
+                            if(nameButton.equals("MIN")){
+                                myTime->setMyHoursAllarm(myTime->getMyHoursAllarm()-1);
+                            }
+                        }
 	                    myTime->validateTimeDuringSettings();
                         
                         break;
@@ -76,6 +85,15 @@ void Button::update(Mode *mode, MyTime *myTime)
                             }
                             if(nameButton.equals("MIN")){
                                 myTime->setMyMonth(myTime->getMyMonth()-1);
+                            }
+                        }
+                        if(mode->getIndex() == 4){
+                            //ALLARM
+                            if(nameButton.equals("PLUS")){
+                                myTime->setMyMinutesAllarm(myTime->getMyMinutesAllarm()+1);
+                            }
+                            if(nameButton.equals("MIN")){
+                                myTime->setMyMinutesAllarm(myTime->getMyMinutesAllarm() -1);
                             }
                         }
                         myTime->validateTimeDuringSettings();
@@ -99,6 +117,15 @@ void Button::update(Mode *mode, MyTime *myTime)
                                 myTime->setMyYear(myTime->getMyYear()-1);
                             }
                         }
+                        if(mode->getIndex() == 4){
+                            //ALLARM
+                            if(nameButton.equals("PLUS")){
+                                myTime->setMySecAllarm(myTime->getMySecAllarm()+1);
+                            }
+                            if(nameButton.equals("MIN")){
+                                myTime->setMySecAllarm(myTime->getMySecAllarm() -1);
+                            }
+                        }
                         myTime->validateTimeDuringSettings();
 
                         break;
@@ -113,6 +140,9 @@ void Button::update(Mode *mode, MyTime *myTime)
                 if(nameButton != "SET")
                     Serial.println(mode->getActiveMode());
                 if(nameButton == "SET"){
+                    if(mode->getActiveMode() == "ALLARM OFF" || mode->getActiveMode() == "ALLARM ON" ){
+                        mode->switchAlarmStatus();
+                    }
                     setButtonTimer = millis();  //take the initial time when you pressed the set botton
                 }
             }
