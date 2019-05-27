@@ -51,7 +51,7 @@ But this two connections are very easy and it depends on what components you hav
 
 ## Image
 This is a photo of the real project
-![Image](Image.png?raw=true "image")
+![Image](projectPhoto.png?raw=true "project photo")
 
 ## Project Files
 **Code** and **Code_No_OOP** folders are two realization of the same project.
