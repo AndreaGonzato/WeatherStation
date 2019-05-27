@@ -59,10 +59,10 @@ Last final commit of **Code_No_OOP** was on Apr 18, 2019 and at that time this f
 If you wanna understand only some part of the code or you want to develop and update some new feature I recommend you to use **Code** in wich I used a OOP structure.
 In the **Code** project all the objects are created in the file Code.ino and almost every object has a method call "update" which is the main method.
 
-## Hardware
+### Hardware & Arduino
 The connection protocol used between the display and the Arduino is the I2C.
 In the loop Arduino function no delay can be written for letting the libraries work correctly.
-By default the dht11 sensor reads the data(temperature and humidity) every 20 seconds to avoid excessive slowdowns to the system.
+By default the dht11 sensor reads the data(temperature and humidity) only every 20 seconds to avoid excessive slowdowns to the system.
 
 
 
