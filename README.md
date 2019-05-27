@@ -49,6 +49,10 @@ This is one possible schema for this project:
 Note that in this schema there are not the connection of: passive buzzer and OLED display.
 But this two connections are very easy and it depends on what components you have.
 
+## Image
+This is a photo of the real project
+![Image](Image.jpg?raw=true "image")
+
 ## Project files
 **Code** and **Code_No_OOP** folders are two realization of the same project.
 If you want all the latest features I recommend you to use **Code**
