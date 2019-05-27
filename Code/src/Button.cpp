@@ -28,11 +28,13 @@ void Button::update(Mode *mode, MyTime *myTime)
 
                 if(nameButton.equals("SET")){
                     mode->scrollSubMenu();
-                
+                    
                     if(!mode->getSettingActivity()){
+                        //end setting
                         settingMode = false;
                         setButtonTimer = millis();
                     }
+                    
                 }
 
                 switch(mode->getIndexSubMenu())
@@ -132,7 +134,8 @@ void Button::update(Mode *mode, MyTime *myTime)
                 }
                 
             }else{
-                //when you start to press one button
+                //no setting
+                //when you start to press one button, navigate menu to menu
                 if(nameButton.equals("PLUS"))
                     mode->scrollRight();
                 if(nameButton.equals("MIN"))
@@ -160,6 +163,8 @@ void Button::update(Mode *mode, MyTime *myTime)
         }
     }
 }
+
+
 
 bool Button::getIsPressed(){
     return isPressed;

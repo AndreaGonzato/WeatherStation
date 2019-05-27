@@ -18,17 +18,17 @@ public:
     void update(Mode *mode, MyTime *myTime);
 
     bool getIsPressed();
-    bool getSettingMode();
+    bool getSettingMode(); //indicates if we are setting something
 
 private:
     int pinButton = -1;
     bool isPressed = false;
     String nameButton = "";
 
-    long setButtonTimer;   
-    const long longPressTime = 1000;
+    long setButtonTimer;                //take the initial time when you pressed the set botton
+    const long longPressTime = 1000;    //indicates how many milliseconds are needed to press a button to have a long clik
     
-    bool settingMode = false;
+    bool settingMode = false;  //indicates if we are setting something
 
 
 

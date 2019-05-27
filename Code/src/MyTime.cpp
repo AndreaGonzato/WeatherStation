@@ -18,14 +18,14 @@ MyTime::MyTime(int pIO, int p5V, int f){
 void MyTime::update(Mode *mode)
 {	
 	unsigned long currentTime = millis(); // update current time
-	//Serial.println(sec); 
+
 	if (currentTime - previousTime >= synchronizationTimeInterval){   // if time is up (1 second has pass)
 		previousTime = currentTime;   // updates the previous time: previousTime remember when the last sec was pass
-		mySec += 1;                     //update sec
+		mySec += 1;                   //update sec
 		validateTime();
-   	 	Serial.println(mySec);          //print the actual sec on the consol, just for having a log/time rappresentation
-
+   	 	Serial.println(mySec);        //print the actual sec on the consol, just for having a log/time rappresentation
 	}
+
 	if(mode->getSettingActivity()){
 		//setting-mode
 		//I need to change the var displayWhatAreYouSetting evry blinkInterval
@@ -34,9 +34,10 @@ void MyTime::update(Mode *mode)
 			mode->setDisplayWhatAreYouSetting(!mode->getDisplayWhatAreYouSetting());
 		}
 	}
+
 	if(isTimeToPlayAllarm() && mode->getModes(4) == "ALLARM ON"){
 		startAllarm();
-		timeToEndAllarm = currentTime + alarmInterval;
+		timeToEndAllarm = currentTime + alarmInterval;  //indicate when to finish play allarm
 	}
 
 	if(abs(timeToEndAllarm - currentTime) < 100){
@@ -45,12 +46,16 @@ void MyTime::update(Mode *mode)
 	
 }
 
+
 void MyTime::startAllarm(){
 	tone(allarmPin5V, alarmFrequency);
 }
+
+
 void MyTime::endAllarm(){
 	noTone(allarmPin5V);
 }
+
 
 void MyTime::validateTime(){
 
@@ -66,12 +71,15 @@ void MyTime::validateTime(){
 				if(myMonth == 2 && myDay > 28){
 					myMonth += 1;
 				}
+
 				if((myMonth == 4 || myMonth == 9 || myMonth == 11) && (myDay >30)){
 					myMonth += 1;
 				}
+
 				if(myDay > 31){
 					myMonth += 1;
 				}
+
 				if(myMonth > 12){
 					myMonth = 1;
 					myYear += 1;
@@ -82,6 +90,7 @@ void MyTime::validateTime(){
 	}
 	
 }
+
 
 void MyTime::validateTimeDuringSettings(){
 	if(mySec>=60){

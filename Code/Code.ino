@@ -57,15 +57,15 @@ controllSingleDigitDisplay singleDigitDisplay = controllSingleDigitDisplay();
 float temperature;
 int humidity;
 
-
 unsigned long lastSamplingSensor = 0;
-unsigned long samplingSensorInterval = 20000;
+int samplingSensorInterval = 20000;
 
 void setup(){
     //declare pin:
     //allarm pin:
     pinMode(allarmPinIO, OUTPUT);
     pinMode(allarmPin5V, OUTPUT); 
+    
     //display (4 digits)
     pinMode(seg_a_4_digits, OUTPUT);
     pinMode(seg_b_4_digits, OUTPUT);
@@ -82,7 +82,7 @@ void setup(){
     pinMode(d3, OUTPUT);
     pinMode(d4, OUTPUT);
 
-      //SET UP SEVSEG LIBRARY
+    //SET UP SEVSEG LIBRARY
     byte numDigits = 4;
     byte digitPins[] = {d1, d2, d3, d4};
     byte segmentPins[] = {seg_a_4_digits, seg_b_4_digits, seg_c_4_digits, seg_d_4_digits, seg_e_4_digits, seg_f_4_digits, seg_g_4_digits, seg_p_4_digits};
@@ -110,6 +110,7 @@ void setup(){
     humidity = dht.readHumidity();
 }
 
+
 void loop(){
     myTime.update(&mode);
     setButton.update(&mode, &myTime);
@@ -120,9 +121,8 @@ void loop(){
 
     if(currentTime - lastSamplingSensor > samplingSensorInterval){
       lastSamplingSensor = currentTime;
-      temperature = dht.readTemperature();
-      humidity = dht.readHumidity();
-      Serial.println(temperature);
+      temperature = dht.readTemperature();  // update current temperature
+      humidity = dht.readHumidity();        // update current humidity
     }
     
     //display on 7-segments
@@ -137,14 +137,19 @@ void loop(){
     mode.setUpdateOLED(false);
 
 }
+
+
 void displayOn7Segments(){
+    //this method is used to display on 7-segment display all the info
+    
     int numToDisplayOnSingleDigit = -1;
-    // if at the end thi var will be negative, then will not display nothing
+    // if at the end this var will be negative, then will not display nothing
     
     if(mode.getActiveMode() == "TIME"){
         digitalWrite(seg_dp_4_digits, HIGH);  // set the two points on :
         
         if(!mode.getSettingActivity() || mode.getDisplayWhatAreYouSetting()){
+            //display all
             int myTimeToDisplay = myTime.getMyHours() * 100 + myTime.getMyMinutes() ;
             sevseg.setNumber(myTimeToDisplay, 4);
             sevseg.refreshDisplay();
@@ -163,17 +168,11 @@ void displayOn7Segments(){
                     update7SegDiplayTime(myTime.getMyHours(), myTime.getMyMinutes());           
                     numToDisplayOnSingleDigit = -1;
                     break;
-                
             }
-            
-            
-            
-        }
-        
-        
+        }     
     }
+    
     if(mode.getActiveMode() == "DATE"){
-        Serial.println(mode.getDisplayWhatAreYouSetting());
         digitalWrite(seg_dp_4_digits, LOW);  // set the two points off :
         if(!mode.getSettingActivity() || mode.getDisplayWhatAreYouSetting()){
             //display all
@@ -195,8 +194,8 @@ void displayOn7Segments(){
                     break;
             }
         }
-        
     }
+    
     if(mode.getActiveMode() == "DEGREES"){
         digitalWrite(seg_dp_4_digits, LOW);  // set the two points off :
         int myTemperatureToDisplay = (int)(temperature) ;
@@ -205,11 +204,13 @@ void displayOn7Segments(){
         int myDecimalTemperature = (int)((temperature*100) - (myTemperatureToDisplay*100));
         numToDisplayOnSingleDigit = abs(myDecimalTemperature);
     }
+    
     if(mode.getActiveMode() == "HUMIDITY"){
         digitalWrite(seg_dp_4_digits, LOW);  // set the two points off :
         sevseg.setNumber(humidity);
         sevseg.refreshDisplay();
     }
+    
     if(mode.getActiveMode() == "ALLARM OFF" || mode.getActiveMode() == "ALLARM ON" ){
         digitalWrite(seg_dp_4_digits, HIGH);  // set the two points on :
         
@@ -231,19 +232,19 @@ void displayOn7Segments(){
                 case 3: //do not show seconds    
                     update7SegDiplayTime(myTime.getMyHoursAllarm(), myTime.getMyMinutesAllarm());           
                     numToDisplayOnSingleDigit = -1;
-                    break;
-                
+                    break; 
             }
-  
         }
-
     }
     
-    singleDigitDisplay.myUpdate(numToDisplayOnSingleDigit);
+    singleDigitDisplay.myUpdate(numToDisplayOnSingleDigit);  //update single digut display
     
 }
 
+
 void OLEDisplayText(String text) {
+    //this method is used to overwrite/display info on the OLED display
+    
     display.clearDisplay();
     
     display.setTextSize(2);             // Normal 1:1 pixel scale
@@ -251,10 +252,12 @@ void OLEDisplayText(String text) {
     display.setCursor(0,0);             // Start at top-left corner
     
     display.println(text);              // Display the text 
-
 }
 
+
 void update7SegDiplayDate(int day, int month){
+    //this method is used to display day & month on the 7-segments display
+     
     int d1 = day % 10;
     int d2 = (day - d1) / 10;
     char c2 = (char)d1;
@@ -279,6 +282,8 @@ void update7SegDiplayDate(int day, int month){
 
 
 void update7SegDiplayTime(int hour, int minutes){
+    //this method is used to display hour & minutes on the 7-segments display
+    
     int d1 = hour % 10;
     int d2 = (hour - d1) / 10;
     char c2 = (char)d1;
@@ -300,12 +305,4 @@ void update7SegDiplayTime(int hour, int minutes){
     
     sevseg.setChars(str);
     sevseg.refreshDisplay();
-}
-
-void startAllarm(){
-    tone(allarmPin5V, alarmFrequency);
-}
-
-void endAllarm(){
-    noTone(allarmPin5V);
 }

@@ -57,39 +57,50 @@ int Mode::getIndex(){
     return index;
 }
 void Mode::scrollSubMenu(){
-    if(index == 0){
-        //"TIME" sub menu
-        indexSubMenu += 1;
-        settingActivity = true;
-        //Serial.println(getActualSubMenu());
-        if(indexSubMenu>3){
-            indexSubMenu = 0;
-            settingActivity = false;
-            displayWhatAreYouSetting = true;
+    if(index == 0 || index == 1 || index == 4){
+        String toPrint = "";
+
+        switch (index)
+        {
+            case 0: //"TIME" sub menu                
+                indexSubMenu += 1;
+                settingActivity = true;
+                toPrint = getActualSubMenu();
+                if(indexSubMenu>3){
+                    indexSubMenu = 0;
+                    settingActivity = false;
+                    displayWhatAreYouSetting = true;
+                }
+                break;
+
+            case 1: //"DATE" sub menu
+                indexSubMenu += 1;
+                settingActivity = true;
+                toPrint = getActualSubMenu();
+                if(indexSubMenu>3){
+                    indexSubMenu = 0;
+                    settingActivity = false;
+                    displayWhatAreYouSetting = true;
+                }
+                break;
+            
+            case 4: //"ALLARM sub menu"
+                //"ALLARM" sub menu
+                indexSubMenu += 1;
+                settingActivity = true;
+                toPrint = getActualSubMenu();
+                if(indexSubMenu>3){
+                    indexSubMenu = 0;
+                    settingActivity = false;
+                    displayWhatAreYouSetting = true;
+                }
+                break;
+
         }
+        Serial.println(toPrint);
+
     }
-    if(index == 1){
-        //"DATE" sub menu
-        indexSubMenu += 1;
-        settingActivity = true;
-        //Serial.println(getActualSubMenu());
-        if(indexSubMenu>3){
-            indexSubMenu = 0;
-            settingActivity = false;
-            displayWhatAreYouSetting = true;
-        }
-    }
-    if(index == 4){
-        //"ALLARM" sub menu
-        indexSubMenu += 1;
-        settingActivity = true;
-        Serial.println(getActualSubMenu());
-        if(indexSubMenu>3){
-            indexSubMenu = 0;
-            settingActivity = false;
-            displayWhatAreYouSetting = true;
-        }
-    }
+    
     
 }
 

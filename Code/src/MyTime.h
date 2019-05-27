@@ -3,6 +3,7 @@
   Created by Andrea G. Italy, 21-04-2019.
   Released into the public domain.
 */
+
 #ifndef MyTime_h
 #define MyTime_h
 
@@ -42,8 +43,6 @@ public:
 	void setMyMonth(int m);
 	void setMyYear(int y);
 
-
-
 private:
 	int mySec = 0;
 	int myMinutes = 0;
@@ -58,17 +57,19 @@ private:
 	int myYear = 19;
 
 	bool isTimeToPlayAllarm(); //indicate if we need to start play the allrm
+
 	void startAllarm();
 	void endAllarm();
 
 	const int blinkInterval = 500;
 	unsigned long lastBlink = 0;
 
-	void validateTime();
-	bool isInSettingMode = false;
+	void validateTime(); 		  //check that the date format is correct
 
-	const double synchronizationTimeInterval = 1000;
-	unsigned long previousTime = 0;
+	bool isInSettingMode = false; //indicates if you are setting something
+
+	const double synchronizationTimeInterval = 1000;  //indicates how many milliseconds to increase the system by one second
+	unsigned long previousTime = 0;  				  //previous second past when the system was active from this var milliseconds
 
 	int allarmPinIO;
 	int allarmPin5V;
@@ -76,7 +77,6 @@ private:
 
 	const int alarmInterval = 5000;
 	unsigned long timeToEndAllarm = 0; 
-
 
 };
 
