@@ -46,7 +46,7 @@ For setting a particular activity you need to do a long click on the SET button 
 This is one possible schema for this project:
 ![Scema](Schema.png?raw=true "schema")
 
-Note that in this schema there are not the connection of: passive buzzer and OLED display.
+Note that in this schema there isn't the connection of: passive buzzer and OLED display.
 But this two connections are very easy and it depends on what components you have.
 
 ## Image
