@@ -59,12 +59,12 @@ void Button::update(Mode *mode, MyTime *myTime)
                             }
                         }
                         if(mode->getIndex() == 4){
-                            //ALLARM
+                            //ALARM
                             if(nameButton.equals("PLUS")){
-                                myTime->setMyHoursAllarm(myTime->getMyHoursAllarm()+1);
+                                myTime->setMyHoursAlarm(myTime->getMyHoursAlarm()+1);
                             }
                             if(nameButton.equals("MIN")){
-                                myTime->setMyHoursAllarm(myTime->getMyHoursAllarm()-1);
+                                myTime->setMyHoursAlarm(myTime->getMyHoursAlarm()-1);
                             }
                         }
 	                    myTime->validateTimeDuringSettings();
@@ -90,12 +90,12 @@ void Button::update(Mode *mode, MyTime *myTime)
                             }
                         }
                         if(mode->getIndex() == 4){
-                            //ALLARM
+                            //ALARM
                             if(nameButton.equals("PLUS")){
-                                myTime->setMyMinutesAllarm(myTime->getMyMinutesAllarm()+1);
+                                myTime->setMyMinutesAlarm(myTime->getMyMinutesAlarm()+1);
                             }
                             if(nameButton.equals("MIN")){
-                                myTime->setMyMinutesAllarm(myTime->getMyMinutesAllarm() -1);
+                                myTime->setMyMinutesAlarm(myTime->getMyMinutesAlarm() -1);
                             }
                         }
                         myTime->validateTimeDuringSettings();
@@ -120,12 +120,12 @@ void Button::update(Mode *mode, MyTime *myTime)
                             }
                         }
                         if(mode->getIndex() == 4){
-                            //ALLARM
+                            //ALARM
                             if(nameButton.equals("PLUS")){
-                                myTime->setMySecAllarm(myTime->getMySecAllarm()+1);
+                                myTime->setMySecAlarm(myTime->getMySecAlarm()+1);
                             }
                             if(nameButton.equals("MIN")){
-                                myTime->setMySecAllarm(myTime->getMySecAllarm() -1);
+                                myTime->setMySecAlarm(myTime->getMySecAlarm() -1);
                             }
                         }
                         myTime->validateTimeDuringSettings();
@@ -143,7 +143,7 @@ void Button::update(Mode *mode, MyTime *myTime)
                 if(nameButton != "SET")
                     Serial.println(mode->getActiveMode());
                 if(nameButton == "SET"){
-                    if(mode->getActiveMode() == "ALLARM OFF" || mode->getActiveMode() == "ALLARM ON" ){
+                    if(mode->getActiveMode() == "ALARM OFF" || mode->getActiveMode() == "ALARM ON" ){
                         mode->switchAlarmStatus();
                     }
                     setButtonTimer = millis();  //take the initial time when you pressed the set botton

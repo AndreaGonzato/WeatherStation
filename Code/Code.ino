@@ -211,26 +211,26 @@ void displayOn7Segments(){
         sevseg.refreshDisplay();
     }
     
-    if(mode.getActiveMode() == "ALLARM OFF" || mode.getActiveMode() == "ALLARM ON" ){
+    if(mode.getActiveMode() == "ALARM OFF" || mode.getActiveMode() == "ALARM ON" ){
         digitalWrite(seg_dp_4_digits, HIGH);  // set the two points on :
         
         if(!mode.getSettingActivity() || mode.getDisplayWhatAreYouSetting()){
-            int myTimeAllarmToDisplay = myTime.getMyHoursAllarm() * 100 + myTime.getMyMinutesAllarm() ;
-            sevseg.setNumber(myTimeAllarmToDisplay, 4);
+            int myTimeAlarmToDisplay = myTime.getMyHoursAlarm() * 100 + myTime.getMyMinutesAlarm() ;
+            sevseg.setNumber(myTimeAlarmToDisplay, 4);
             sevseg.refreshDisplay();
-            numToDisplayOnSingleDigit = myTime.getMySecAllarm();
+            numToDisplayOnSingleDigit = myTime.getMySecAlarm();
         }else{
             switch (mode.getIndexSubMenu()){
                 case 1: //do not show hours    
-                    update7SegDiplayTime(-1, myTime.getMyMinutesAllarm());           
-                    numToDisplayOnSingleDigit = myTime.getMySecAllarm();
+                    update7SegDiplayTime(-1, myTime.getMyMinutesAlarm());           
+                    numToDisplayOnSingleDigit = myTime.getMySecAlarm();
                     break;
                 case 2: //do not show minutes    
-                    update7SegDiplayTime(myTime.getMyHoursAllarm(), -1);           
-                    numToDisplayOnSingleDigit = myTime.getMySecAllarm();
+                    update7SegDiplayTime(myTime.getMyHoursAlarm(), -1);           
+                    numToDisplayOnSingleDigit = myTime.getMySecAlarm();
                     break;
                 case 3: //do not show seconds    
-                    update7SegDiplayTime(myTime.getMyHoursAllarm(), myTime.getMyMinutesAllarm());           
+                    update7SegDiplayTime(myTime.getMyHoursAlarm(), myTime.getMyMinutesAlarm());           
                     numToDisplayOnSingleDigit = -1;
                     break; 
             }

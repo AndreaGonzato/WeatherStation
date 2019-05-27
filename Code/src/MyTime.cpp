@@ -10,8 +10,8 @@
 
 
 MyTime::MyTime(int pIO, int p5V, int f){
-	allarmPinIO= pIO;
-	allarmPin5V= p5V;
+	alarmPinIO= pIO;
+	alarmPin5V= p5V;
 	alarmFrequency = f;
 }
 
@@ -35,25 +35,25 @@ void MyTime::update(Mode *mode)
 		}
 	}
 
-	if(isTimeToPlayAllarm() && mode->getModes(4) == "ALLARM ON"){
-		startAllarm();
-		timeToEndAllarm = currentTime + alarmInterval;  //indicate when to finish play allarm
+	if(isTimeToPlayAlarm() && mode->getModes(4) == "ALARM ON"){
+		startAlarm();
+		timeToEndAlarm = currentTime + alarmInterval;  //indicate when to finish play alarm
 	}
 
-	if(abs(timeToEndAllarm - currentTime) < 100){
-		endAllarm();
+	if(abs(timeToEndAlarm - currentTime) < 100){
+		endAlarm();
 	}
 	
 }
 
 
-void MyTime::startAllarm(){
-	tone(allarmPin5V, alarmFrequency);
+void MyTime::startAlarm(){
+	tone(alarmPin5V, alarmFrequency);
 }
 
 
-void MyTime::endAllarm(){
-	noTone(allarmPin5V);
+void MyTime::endAlarm(){
+	noTone(alarmPin5V);
 }
 
 
@@ -135,31 +135,31 @@ void MyTime::validateTimeDuringSettings(){
 		myYear = 99;
 	}
 
-	if(mySecAllarm>=60){
-		mySecAllarm = 0;
+	if(mySecAlarm>=60){
+		mySecAlarm = 0;
 	}
-	if(mySecAllarm<0){
-		mySecAllarm = 59;
-	}
-
-	if(myMinutesAllarm>=60){
-		myMinutesAllarm = 0;
-	}
-	if(myMinutesAllarm<0){
-		myMinutesAllarm = 59;
+	if(mySecAlarm<0){
+		mySecAlarm = 59;
 	}
 
-	if(myHoursAllarm>=24){
-		myHoursAllarm = 0;
+	if(myMinutesAlarm>=60){
+		myMinutesAlarm = 0;
 	}
-	if(myHoursAllarm<0){
-		myHoursAllarm = 23;
+	if(myMinutesAlarm<0){
+		myMinutesAlarm = 59;
+	}
+
+	if(myHoursAlarm>=24){
+		myHoursAlarm = 0;
+	}
+	if(myHoursAlarm<0){
+		myHoursAlarm = 23;
 	}
 
 }
 
-bool MyTime::isTimeToPlayAllarm(){
-	if(getMyHours() == getMyHoursAllarm() && getMyMinutes() == getMyMinutesAllarm() && getMySec() == getMySecAllarm()){
+bool MyTime::isTimeToPlayAlarm(){
+	if(getMyHours() == getMyHoursAlarm() && getMyMinutes() == getMyMinutesAlarm() && getMySec() == getMySecAlarm()){
 		return true;
 	}
 	else{
@@ -180,16 +180,16 @@ int MyTime::getMyHours(){
 }
 
 
-int MyTime::getMySecAllarm(){
-	return mySecAllarm;
+int MyTime::getMySecAlarm(){
+	return mySecAlarm;
 }
 
-int MyTime::getMyMinutesAllarm(){
-	return myMinutesAllarm;
+int MyTime::getMyMinutesAlarm(){
+	return myMinutesAlarm;
 }
 
-int MyTime::getMyHoursAllarm(){
-	return myHoursAllarm;
+int MyTime::getMyHoursAlarm(){
+	return myHoursAlarm;
 }
 
 int MyTime::getMyDay(){
@@ -218,16 +218,16 @@ void MyTime::setMyHours(int h){
 }
 
 
-void MyTime::setMySecAllarm(int s){
-	mySecAllarm = s;
+void MyTime::setMySecAlarm(int s){
+	mySecAlarm = s;
 }
 
-void MyTime::setMyMinutesAllarm(int m){
-	myMinutesAllarm = m;
+void MyTime::setMyMinutesAlarm(int m){
+	myMinutesAlarm = m;
 }
 
-void MyTime::setMyHoursAllarm(int h){
-	myHoursAllarm = h;
+void MyTime::setMyHoursAlarm(int h){
+	myHoursAlarm = h;
 }
 
 void MyTime::setMyDay(int d){

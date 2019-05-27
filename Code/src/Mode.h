@@ -38,7 +38,7 @@ public:
 
 private:
     String activeMode = "";
-    String modes[5] = {"TIME", "DATE", "DEGREES", "HUMIDITY", "ALLARM OFF"};
+    String modes[5] = {"TIME", "DATE", "DEGREES", "HUMIDITY", "ALARM OFF"};
     int index; //index:  0       1         2           3         4
     int maxIndexValue = 4;
 

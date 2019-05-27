@@ -122,13 +122,13 @@ void Mode::setDisplayWhatAreYouSetting(bool d){
     displayWhatAreYouSetting = d;
 }
  void Mode::switchAlarmStatus(){
-    if(modes[4] == "ALLARM OFF"){
-        modes[4] = "ALLARM ON";
-        Serial.println("ALLARM ON");
+    if(modes[4] == "ALARM OFF"){
+        modes[4] = "ALARM ON";
+        Serial.println("ALARM ON");
     }else{
-        if(modes[4] == "ALLARM ON"){
-            modes[4] = "ALLARM OFF";
-            Serial.println("ALLARM OFF");
+        if(modes[4] == "ALARM ON"){
+            modes[4] = "ALARM OFF";
+            Serial.println("ALARM OFF");
         }
     }
     updateOLED = true;

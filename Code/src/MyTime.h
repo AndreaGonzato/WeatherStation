@@ -23,9 +23,9 @@ public:
 	int getMyMinutes();
 	int getMyHours();
 
-	int getMySecAllarm();
-	int getMyMinutesAllarm();
-	int getMyHoursAllarm();
+	int getMySecAlarm();
+	int getMyMinutesAlarm();
+	int getMyHoursAlarm();
 
 	int getMyDay();
 	int getMyMonth();
@@ -35,9 +35,9 @@ public:
 	void setMyMinutes(int m);
 	void setMyHours(int h);
 
-	void setMySecAllarm(int s);
-	void setMyMinutesAllarm(int m);
-	void setMyHoursAllarm(int h);
+	void setMySecAlarm(int s);
+	void setMyMinutesAlarm(int m);
+	void setMyHoursAlarm(int h);
 
 	void setMyDay(int d);
 	void setMyMonth(int m);
@@ -48,18 +48,18 @@ private:
 	int myMinutes = 0;
 	int myHours = 9;
 
-	int mySecAllarm = 10;
-	int myMinutesAllarm = 0;
-	int myHoursAllarm = 9;
+	int mySecAlarm = 10;
+	int myMinutesAlarm = 0;
+	int myHoursAlarm = 9;
 
 	int myDay = 1;
 	int myMonth = 1;
 	int myYear = 19;
 
-	bool isTimeToPlayAllarm(); //indicate if we need to start play the allrm
+	bool isTimeToPlayAlarm(); //indicate if we need to start play the alarm
 
-	void startAllarm();
-	void endAllarm();
+	void startAlarm();
+	void endAlarm();
 
 	const int blinkInterval = 500;
 	unsigned long lastBlink = 0;
@@ -71,12 +71,12 @@ private:
 	const double synchronizationTimeInterval = 1000;  //indicates how many milliseconds to increase the system by one second
 	unsigned long previousTime = 0;  				  //previous second past when the system was active from this var milliseconds
 
-	int allarmPinIO;
-	int allarmPin5V;
+	int alarmPinIO;
+	int alarmPin5V;
 	int alarmFrequency;
 
 	const int alarmInterval = 5000;
-	unsigned long timeToEndAllarm = 0; 
+	unsigned long timeToEndAlarm = 0; 
 
 };
 
