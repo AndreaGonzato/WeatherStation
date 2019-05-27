@@ -38,7 +38,7 @@ Install these library in your Arduino environment:
 Open the file Code/Code.ino using Arduino IDE, compile and upload on your Arduino then connect all the components like the following schema.
 
 Then to controll the weather station/clock you have three buttons and they work like almost every watch.
-In my schema the leftmost one is the SET button, in the middle ther is the MINUS one and further to the right there is the PLUS one.
+In my schema the leftmost one is the SET button, in the middle there is the MINUS one and further to the right there is the PLUS one.
 To scroll through the menus you can press both of them PLUS or MINUS.
 For setting a particular activity you need to do a long click on the SET button and to deactivate the alarm just press the button SET in the alarm menù.
 
@@ -52,16 +52,20 @@ But this two connections are very easy and it depends on what components you hav
 ## Project files
 **Code** and **Code_No_OOP** folders are two realization of the same project.
 If you want all the latest features I recommend you to use **Code**
+
 Last final commit of **Code_No_OOP** was on Apr 18, 2019 and at that time this folder name was "ArduinoCode"
 
 ## For Programmers
 **Code_No_OOP** has all the code in one file, so is perfet if you want to understand quickly all the code and have a "Big Picture" of the project but it has not all the latest features.
+
 If you wanna understand only some part of the code or you want to develop and update some new feature I recommend you to use **Code** in wich I used a OOP structure.
 In the **Code** project all the objects are created in the file Code.ino and almost every object has a method call "update" which is the main method.
 
 ### Hardware & Arduino
 The connection protocol used between the display and the Arduino is the I2C.
+
 In the loop Arduino function no delay can be written for letting the libraries work correctly.
+
 By default the dht11 sensor reads the data(temperature and humidity) only every 20 seconds to avoid excessive slowdowns to the system.
 
 
