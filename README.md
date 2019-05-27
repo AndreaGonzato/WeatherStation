@@ -50,7 +50,7 @@ Note that in this schema there are not the connection of: passive buzzer and OLE
 But this two connections are very easy and it depends on what components you have.
 
 ## Image
-This is a photo of the real project
+This is a photo of my project
 ![Image](projectPhoto.png?raw=true "project photo")
 
 ## Project Files
