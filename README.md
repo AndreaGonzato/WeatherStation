@@ -8,9 +8,8 @@ Weather Station is an Arduino project.
  * digital humidity sensor
  * alarm clock
  
-
 ## Electronic Components
-This is what I used for this project:
+This is the complete list of all the electronic components that I used for this project
 * [1] Arduino Mega 2560  (you can't use the Arduino Uno because you don't have too much digital pins)
 * [1] breadboard (63x10) 
 * [1] DHT11 humidity and temperature (digital sensor) 																
@@ -37,7 +36,7 @@ Install these library in your Arduino environment:
 * Adafruit_Sensor  	https://github.com/adafruit/Adafruit_Sensor
 
 Open the file Code/Code.ino using Arduino IDE
-Compile & upload on your Arduino.
+Compile and upload on your Arduino.
 Connect all the components like the following schema.
 
 ## Schema
@@ -60,6 +59,17 @@ I estimate that the clock loses approximately one second per day.
 
 ## Remark
 The date format is: dd/mm/yy
+
+## Future developments
+The project is not yet fully completed.
+Next features to develop:
+* new alarm clock melodies
+* new timer mode
+* new stopwatch mode
+* introduction of a barometer sensor and a new mode to read it status 
+* introduction of some beep sound during setting mode
+* new storage system of weather data on micro and a software for having a complete report on PC
+
 
 ## Warnings
 The system is not fully tested.

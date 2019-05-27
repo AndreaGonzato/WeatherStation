@@ -143,7 +143,7 @@ void MyTime::validateTimeDuringSettings(){
 	}
 
 	if(myMinutesAllarm>=60){
-		myMinutes = 0;
+		myMinutesAllarm = 0;
 	}
 	if(myMinutesAllarm<0){
 		myMinutesAllarm = 59;
