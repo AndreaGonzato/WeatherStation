@@ -53,7 +53,7 @@ But this two connections are very easy and it depends on what components you hav
 This is a photo of the real project
 ![Image](Image.png?raw=true "image")
 
-## Project files
+## Project Files
 **Code** and **Code_No_OOP** folders are two realization of the same project.
 If you want all the latest features I recommend you to use **Code**
 
