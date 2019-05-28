@@ -10,7 +10,7 @@ Weather Station is an Arduino project.
  
 ## Electronic Components
 This is the complete list of all the electronic components that I used for this project:
-* [1] Arduino Mega 2560  (you can't use the Arduino Uno because you don't have too much digital pins)
+* [1] Arduino Mega 2560  (you can't use the Arduino Uno because you don't have too many digital pins)
 * [1] breadboard (63x10) 
 * [1] DHT11 humidity and temperature (digital sensor) 																
 	https://www.amazon.it/gp/product/B00L11IISS/ref=ppx_yo_dt_b_asin_title_o06_s00?ie=UTF8&psc=1
@@ -28,26 +28,26 @@ This is the complete list of all the electronic components that I used for this 
 
 
 ## Usage
-Install these library in your Arduino environment:
+Install these library on your Arduino environment:
 * SevSeg  			https://github.com/DeanIsMe/SevSeg
 * Adafruit_GFX  	https://github.com/adafruit/Adafruit-GFX-Library
 * Adafruit_SSD1306	https://github.com/adafruit/Adafruit_SSD1306
 * DHT				https://github.com/adafruit/DHT-sensor-library
 * Adafruit_Sensor  	https://github.com/adafruit/Adafruit_Sensor
 
-Open the file Code/Code.ino using Arduino IDE, compile and upload on your Arduino then connect all the components like the following schema.
+Open the file Code/Code.ino using Arduino IDE, compile and upload on your Arduino and then connect all the components like the following schema.
 
 Then to controll the weather station/clock you have three buttons and they work like almost every watch.
-In my schema the leftmost one is the SET button, in the middle there is the MINUS one and further to the right there is the PLUS one.
+In this schema the leftmost one is the SET button, in the middle there is the MINUS one and further to the right there is the PLUS one.
 To scroll through the menus you can press both of them PLUS or MINUS.
-For setting a particular activity you need to do a long click on the SET button and to deactivate the alarm just press the button SET in the alarm menù.
+For setting a particular activity you need to press a long on the SET button; to deactivate the alarm just press the SET button in the alarm menu.
 
 ## Schema
 This is one possible schema for this project:
 ![Scema](Schema.png?raw=true "schema")
 
 Note that in this schema there isn't the connection of: passive buzzer and OLED display.
-But this two connections are very easy and it depends on what components you have.
+But this two connections are very easy and depends a lot on the components you held.
 
 ## Image
 This is a photo of my project
@@ -55,23 +55,22 @@ This is a photo of my project
 
 ## Project Files
 **Code** and **Code_No_OOP** folders are two realization of the same project.
-If you want all the latest features I recommend you to use **Code**
+If you want all the latest features I recommend to use **Code**.
 
-Last final commit of **Code_No_OOP** was on Apr 18, 2019 and at that time this folder name was "ArduinoCode"
+Last final commit of **Code_No_OOP** was on Apr 18, 2019 and at that time this folder name was "ArduinoCode".
 
 ## For Programmers
-**Code_No_OOP** has all the code in one file, so is perfet if you want to understand quickly all the code and have a "Big Picture" of the project but it has not all the latest features.
+All the code in **Code_No_OOP** is in only one file: so it is perfect if you want to understand the whole structure of the project but it doesn't have all the latest features.
 
-If you wanna understand only some part of the code or you want to develop and update some new feature I recommend you to use **Code** in wich I used a OOP structure.
-In the **Code** project all the objects are created in the file Code.ino and almost every object has a method call "update" which is the main method.
+If you wanna understand only some part of the code or you want to develop and update some new feature I recommend to use **Code**, which used a OOP structure.
+In the **Code** project all the objects are created in the file Code.ino and most of objects have a method call "update", which is the main method.
 
 ### Hardware & Arduino
 The connection protocol used between the display and the Arduino is the I2C.
 
-In the loop Arduino function no delay can be written for letting the libraries work correctly.
+In Arduino loop function you can't add some delay, because otherwise libraries doesn't work correctly.
 
-By default the dht11 sensor reads the data(temperature and humidity) only every 20 seconds to avoid excessive slowdowns to the system.
-
+The dht11 sensor reads by default the data (temperature and humidity) every 20 seconds. This is to avoid excessive slowdowns to the system.
 
 
 ## Precision
@@ -81,12 +80,12 @@ I estimate that the clock loses approximately one second per day.
 The date format is: dd/mm/yy
 
 ## Future developments
-The project is not yet fully completed.
+The project is not fully completed yet.
 Next features to develop:
 * new alarm clock melodies
 * new timer mode
 * new stopwatch mode
-* introduction of a barometer sensor and a new mode to read it status 
+* introduction of a barometer sensor and a new mode to read his status 
 * introduction of some beep sound during setting mode
 * new storage system of weather data on micro sd and a software for having a complete report on PC
 
@@ -94,7 +93,7 @@ Next features to develop:
 ## Warnings
 The system is not fully tested.
 
-The system after 4,294,967,295 milliseconds ≃ 49 days could crash due to overflow (not yet tested).
+The system after 4,294,967,295 milliseconds ≃ 49 days could crash due to overflow (not tested yet).
 
 ## Credits
 All the software is open source and developed by Andrea Gonzato
