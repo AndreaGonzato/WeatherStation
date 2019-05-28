@@ -1,4 +1,4 @@
-# WeatherStation
+# Weather Station
 Weather Station is an Arduino project.
 
 ## Main Components
@@ -39,7 +39,7 @@ Open the file Code/Code.ino using Arduino IDE, compile and upload on your Arduin
 
 Then to controll the weather station/clock you have three buttons and they work like almost every watch.
 In this schema the leftmost one is the SET button, in the middle there is the MINUS one and further to the right there is the PLUS one.
-To scroll through the menus you can press both of them PLUS or MINUS.
+To scroll through menus you can press both of them PLUS or MINUS.
 For setting a particular activity you need to press a long on the SET button; to deactivate the alarm just press the SET button in the alarm menu.
 
 ## Schema
