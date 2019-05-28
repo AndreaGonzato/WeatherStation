@@ -1,0 +1,170 @@
+\documentclass[paper=a4, fontsize=10pt]{scrartcl}
+
+\usepackage{amsmath}
+\usepackage[italian]{babel}
+\usepackage{tabularx,ragged2e,booktabs,caption} % for table title
+\setlength{\parskip}{0.5em} % for paragraph spacing
+\DeclareOldFontCommand{\bf}{\normalfont\bfseries}{\mathbf} %declare \bf command in scrartcl
+
+\usepackage{graphicx} % per aggiungere figure/foto
+
+\usepackage{sectsty} % Allows customizing section commands
+\allsectionsfont{\normalfont\scshape} % Make all sections, the default font and small caps
+
+\pagenumbering{gobble} % remove the number of pages
+
+
+%%
+\usepackage[utf8]{inputenc}
+\newcommand{\approxtext}[1]{\ensuremath{\stackrel{\text{#1}}{\approx}}}
+%% now i can add a comment on top of “equal” and “approximate” symbols
+
+
+
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+\title{	
+\normalfont \normalsize 
+\textsc{Universit\`a degli Studi di Trieste - Dipartimento di Ingegneria e Architettura} \\ [25pt] % Your university, school and/or department name(s)
+\horrule{0.5pt} \\[0.4cm] % Thin top horizontal rule
+\huge \textbf{Relazione progetto Reti Logiche\\ Weather Station}  \\ % The assignment title
+\horrule{2pt} \\[0.5cm] % Thick bottom horizontal rule
+}
+
+\author{Andrea Gonzato} % Your name
+
+\date{\normalsize Maggio 2019} % Today's date or a custom date
+
+\setlength{\parindent}{0cm}
+
+\begin{document}
+\maketitle % Print the title
+
+\pagebreak
+
+\tableofcontents
+
+\pagebreak
+
+\section{Sommario}
+Questa è la relazione del progetto di Arduino svolto per il corso di reti logiche tenuto dal Professore Marsi dell'Università di Trieste.
+
+\section{Scopo del progetto}
+Lo scopo del progetto "Weather Station", da come suggerisce il nome è quello di realizzare una stazione meteorologica amatoriale. In aggiunta all'opportunità di poter visualizzare la temperatura e l'umidità attuale, sono state aggiunte funzionalità secondarie come la possibilità di poter leggere l'ora, data attuale e di poter utilizzarla la stazione anche come fosse una sveglia. Ovviamente è previsto che data ora e sveglia possono essere regolate e la sveglia inoltre sia anche disattivabile.
+
+\subsection{Descrizione per l'utilizzo}
+Per controllare la stazione meteorologica ci sono tre pulsanti: \textit{SET}, \textbf{+}, \textbf{-}.
+Il funzionamento ricorda molto l'utilizzo dei classici orologi da polso digitali. Dunque per poter scorrere lungo tutte le funzionalità si utilizzano i pulsanti \textbf{+} e \textbf{-}, mentre per impostare data, ora e sveglia si necessita di tener premuto per un secondo il pulsante \textit{SET}, dopodichè nella regolazione si usano gli analoghi pulsanti per aumentare e diminuire, mentre per passare a impostare il campo successivo oppure per attivare/disattivare la sveglia si necessita di premere una singola volta il pulsante \textit{SET}.
+
+
+\subsection{Specifiche}
+Come principali specifiche da rispettare, era necessario che l'orologio abbia una precisione che permetta di regolarlo mensilmente. Quindi ragionevolmente si richiedeva un errore inferiore di un secondo dopo 24 ore dalla sincronizzazione con un orologio affidabile.\\
+Le altre specifiche sui dati meteo richiedono un errore inferiore a 1 grado Celsius per la temperatura e 2 punti percentuali per l'umidità.
+
+Tutte e tre le specifiche nella realizzazione finale del progetto sono state rispettate.
+
+\subsection{Progetto finale}
+aggungi qualche foto qua
+
+
+
+\section{Realizzazione}
+Tutto il progetto è stato realizzato tra Marzo 2019 e Maggio 2019.\\
+
+\subsection{Metodo usato}
+Il primo periodo è stato utilizzato per recuperare il materiale necessario. Una volta reperiti i componenti sono stati eseguiti una serie di test per comprendere l'utilizzo e le capacità dei singoli componenti.
+
+Nella seconda fase, momento in cui è iniziata la vera realizzazione del progetto, la metodologia adottata era ispirata al paradigma AGILE: Si aggiungevano funzionalità una alla volta passando ciclicamente da una fase di progettazione a sviluppo per poi passare ai test e verificare la correttezza delle implementazioni.
+
+\begin{figure}
+  \includegraphics[width=\linewidth]{AGILE.jpeg}
+  \caption{AGILE paradigma}
+  \label{fig:agile1}
+\end{figure}
+    
+La figura \ref{fig:agile1}
+illustra bene il paradigma adottato.
+
+
+Nell'ultima fase del progetto, una volta implementata gran parte delle funzionalità, c'era la necessità di ristrutture il codice, creando una nuove versione strutturata ad oggetti, per poter avere un codice più leggibile ed uniforme.
+\subsection{Struttura programmazione ad oggetti}
+Di seguito viene fornita una breve descrizione di come è stato strutturato ad oggetti il progetto.
+
+Tutti gli oggetti vengono creati nel file \textit{Code/code.ino} e per ogni classe viene implementato un solo oggetto apparte per la classe \textit{Button} dove ne vengono creati tre. I metodi "principali" di ogni classe si chiamano \textit{update()} e in tali metodi i vari oggetti comunicano tra di loro i cambiamenti registrati durante il ciclo di eseguzione della funzione \textit{loop()}
+
+Le classi implementate sono:
+
+\begin{itemize}
+\item MyTime: una classe che contiene tutte le variabili temporali e scandisce nel tempo l'evoluzione del sistema, questa classe serve per esempio per l'attivazione dell'allarme della sveglia.
+
+\item Mode: una classe che gestisce e aggiorna il sistema informandolo su cosa bisogna visualizzare sui display a 7 segmenti: nella stazione meteo ci sono 5 dati fondamentali da far vedere all'utente che sono: tempo, data, temperatura, umidità, e l'orario a cui è impostata la sveglia. Ma osserva che per questioni progettuali sono uno alla volta di questi dati può essere visualizzato sui display.
+
+\item Button: una classe che gestisce tutte le attività che iniziano alla pressione di un pulsante, per esempio aggiorna il sistema comunicando che durante un settaggio si è premuto un pulsante per far aumentare le ore dell'orologio. Questa classe è in continua comunicazione con MyTime e Mode, per ovvie ragioni.
+
+\item controllSingleDigitDisplay: una classe che si occupa di visualizzare i dati richiesti sui 2 display a 7 segmenti 1 digit.
+\end{itemize}
+
+
+\subsection{Componenti utilizzati}
+Dopo aver definito le specifiche, durante la prima fase è stato necessario reperire tutto il materiale necessario.\\
+Questa è una lista completa del materiale utilizzato
+\begin{itemize}
+\item Arduino Mega 2560
+\item breadboard (63x10)
+\item sensore digitale DHT11 per rilevare temperatura e umidità
+\item schermo OLED (risoluzione: 128*32)
+\item display 7 segmenti (4 digits, catodo comune)
+\item 2 display 7 segmenti (1 digit, catodo comune)
+\item cicalino (buzzer passivo)
+\item 3 bottoni
+\item 7 resistenze da 220 Ohm
+\item 3 resistenze da 1k Ohm
+\item 50/55 cavi elettrici M/M
+\item 8 cavi elettrici M/F
+\end{itemize}
+
+Si osservi che per la realizzazione di questo progetto non è sufficiente un Arduino Uno perché, da come si vede in Figura \ref{fig:schema1}, sono necessarie 34 connessioni digitali.
+\subsection{Schema}
+Di seguito viene riportato lo schema della realizzazione del progetto.
+Figura \ref{fig:schema1}
+
+\begin{figure}
+  \includegraphics[width=\linewidth]{MySchema.jpg}
+  \caption{Schema del circuito}
+  \label{fig:schema1}
+\end{figure}
+    
+
+
+
+\subsection{Strumenti usati}
+I principali strumenti che sono stati utilizzati sono: l'ambiente Arduino e Fritzing come software per disegnare gli schemi elettronici.\\
+Nel codice del progetto sono presenti come librerie esterne:
+\begin{itemize}
+\item \textit{SevSeg}
+\item \textit{DHT}
+\item \textit{Adafruit Sensor}
+\item \textit{Adafruit GFX}
+\item \textit{Adafruit SSD1306}
+\end{itemize}
+
+\textit{SevSeg} è stata utile per "scrivere" sul display a 7 segmenti 4 digits; mentre \textit{DHT} e \textit{Adafruit Sensor} sono servite per leggere i dati dal sensore che rilevava la temperatura e l'umidità; infine  le ultime due librerie hanno permesso di utilizzare lo schemo OLED. 
+
+
+\subsection{Scelte progettuali e difficoltà}
+Una scelta progettuale effettuata, consisteva nel scegliere come far scandire il tempo al sistema.
+La prima opzione consisteva nell'acquisire un modulo RTC appositamente designato per queste attività; ma la scelta progettuale invece attuata è stata di far scandire il tempo direttamente ad Arduino, creando una variabile \textit{long unsigned} che incrementa al passare di ogni millisecondo. Scegliendo questa realizzazione si è riusciti a risparmiare un modulo ma ad un costo: infatti la variabile teoricamente dopo 4,294,967,295 millisecondi, cioè circa in 49 giorni arriva in overflow e probabilmente leggendo il codice si comprende che il sistema potrebbe crashare (questo avvenimento non è ancora stato testato). Per questo motivo sopracitato si raccomanda di resettare la stazione prima dello scadere del quarantottesimo giorno.
+
+Nel progetto originale, l'idea era quella di realizzare il sistema di visualizzazione dati utilizzando due display a 7 segmenti con 4 digits, quindi poter disporre di un totale di 8 digits. Il problema di questa realizzazione era che la libreria \textit{SevSeg} utilizzata non supportava l'opportunità di comandare più display contemporaneamente. Per tale motivo la realizzazione finale del progetto è avvenuta con l'implementazione di un display 4 digits controllato dalla libreria, affiancato da due display sigle digit controllati senza libreria ma con comandi standard \textit{digitalWrite()} di Arduino. Questo compromesso ha reso l'aggiornamento dei display non uniforme e non ottimizzato, infatti ad ogni eseguzione ciclica dell'\textit{loop()} un solo digit del display composto da quattro si aggiorna, mentre entrambi i display single digit si aggiornano.
+
+
+\section{Sviluppi futuri}
+srsvr
+
+\section{Conclusioni}
+Sicuramente il progetto non è ne perfetto ne completo, ma nel suo complesso si può definire un prototipo funzionante.
+
+\section{Dichiarazione finale}
+Tutto il lavoro è stato svolto da me in completa autonomia.
+
+\end{document}
