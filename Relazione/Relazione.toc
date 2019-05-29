@@ -1,17 +1,18 @@
 \select@language {italian}
 \select@language {italian}
-\contentsline {section}{\numberline {1}Sommario}{}
+\contentsline {section}{\numberline {1}Introduzione}{}
 \contentsline {section}{\numberline {2}Scopo del progetto}{}
 \contentsline {subsection}{\numberline {2.1}Descrizione per l'utilizzo}{}
 \contentsline {subsection}{\numberline {2.2}Specifiche}{}
-\contentsline {subsection}{\numberline {2.3}Progetto finale}{}
+\contentsline {subsection}{\numberline {2.3}Risultato ottenuto}{}
 \contentsline {section}{\numberline {3}Realizzazione}{}
 \contentsline {subsection}{\numberline {3.1}Metodo usato}{}
-\contentsline {subsection}{\numberline {3.2}Struttura programmazione ad oggetti}{}
+\contentsline {subsection}{\numberline {3.2}Struttura della programmazione ad oggetti implementata}{}
 \contentsline {subsection}{\numberline {3.3}Componenti utilizzati}{}
 \contentsline {subsection}{\numberline {3.4}Schema}{}
 \contentsline {subsection}{\numberline {3.5}Strumenti usati}{}
 \contentsline {subsection}{\numberline {3.6}Scelte progettuali e difficolt\IeC {\`a}}{}
 \contentsline {section}{\numberline {4}Sviluppi futuri}{}
-\contentsline {section}{\numberline {5}Conclusioni}{}
-\contentsline {section}{\numberline {6}Dichiarazione finale}{}
+\contentsline {section}{\numberline {5}Rilascio materiale}{}
+\contentsline {section}{\numberline {6}Conclusioni}{}
+\contentsline {section}{\numberline {7}Dichiarazione finale}{}

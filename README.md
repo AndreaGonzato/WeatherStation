@@ -59,13 +59,7 @@ If you want all the latest features I recommend to use **Code**.
 
 Last final commit of **Code_No_OOP** was on Apr 18, 2019 and at that time this folder name was "ArduinoCode".
 
-## For Programmers
-All the code in **Code_No_OOP** is in only one file: so it is perfect if you want to understand the whole structure of the project but it doesn't have all the latest features.
-
-If you wanna understand only some part of the code or you want to develop and update some new feature I recommend to use **Code**, which used a OOP structure.
-In the **Code** project all the objects are created in the file Code.ino and most of objects have a method call "update", which is the main method.
-
-### Hardware & Arduino
+## Hardware & Arduino
 The connection protocol used between the display and the Arduino is the I2C.
 
 In Arduino loop function you can't add some delay, because otherwise libraries doesn't work correctly.
