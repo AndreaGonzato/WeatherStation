@@ -15,4 +15,5 @@
 \contentsline {section}{\numberline {4}Sviluppi futuri}{}
 \contentsline {section}{\numberline {5}Rilascio materiale}{}
 \contentsline {section}{\numberline {6}Conclusioni}{}
-\contentsline {section}{\numberline {7}Dichiarazione finale}{}
+\contentsline {section}{\numberline {7}Sitografia}{}
+\contentsline {section}{\numberline {8}Dichiarazione finale}{}
