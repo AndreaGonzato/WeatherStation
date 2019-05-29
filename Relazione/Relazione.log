@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6500 64-bit) (preloaded format=pdflatex 2018.1.30)  29 MAY 2019 15:21
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6500 64-bit) (preloaded format=pdflatex 2018.1.30)  29 MAY 2019 21:50
 entering extended mode
 **./Relazione.tex
 (Relazione.tex
@@ -715,12 +715,12 @@ ne 45.
 <projectPhoto.jpg, id=13, 4047.12pt x 3035.34pt>
 File: projectPhoto.jpg Graphic file (type jpg)
 <use projectPhoto.jpg>
-Package pdftex.def Info: projectPhoto.jpg  used on input line 73. on input line
- 73.
+Package pdftex.def Info: projectPhoto.jpg  used on input line 74. on input line
+ 74.
 Package pdftex.def Info: Requested size: 202.36786pt x 151.7759pt on input line
- 73.
+ 74.
 
-Underfull \hbox (badness 10000) in paragraph at lines 80--81
+Underfull \hbox (badness 10000) in paragraph at lines 81--82
 
  []
 
@@ -728,47 +728,52 @@ Underfull \hbox (badness 10000) in paragraph at lines 80--81
 <AGILE.jpeg, id=19, 969.6225pt x 646.415pt>
 File: AGILE.jpeg Graphic file (type jpg)
 <use AGILE.jpeg>
-Package pdftex.def Info: AGILE.jpeg  used on input line 88. on input line 88.
+Package pdftex.def Info: AGILE.jpeg  used on input line 89. on input line 89.
 Package pdftex.def Info: Requested size: 193.92107pt x 129.2807pt on input line
- 88.
+ 89.
  [4 <./projectPhoto.jpg>]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 109.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 110.
 
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\base\omscmr.fd"
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 109.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 110.
  [5 <./AGILE.jpeg>]
 [6] [7] [8]
+Overfull \hbox (2.94156pt too wide) in paragraph at lines 217--218
+[]\OT1/cmr/m/n/10 http://www.associazionemarconi.com/calcolo/codice[]resistenze
+[]elettriche[]5.html 
+ []
+
 <MySchema.jpg, id=39, 794.167pt x 862.422pt>
 File: MySchema.jpg Graphic file (type jpg)
 <use MySchema.jpg>
-Package pdftex.def Info: MySchema.jpg  used on input line 219. on input line 21
-9.
+Package pdftex.def Info: MySchema.jpg  used on input line 225. on input line 22
+5.
 Package pdftex.def Info: Requested size: 373.44246pt x 405.53578pt on input lin
-e 219.
- [9] [10 <./MySchema.jpg>] (Relazione.aux) ) 
+e 225.
+[9] [10 <./MySchema.jpg>] (Relazione.aux) ) 
 Here is how much of TeX's memory you used:
  6589 strings out of 493312
  105051 string characters out of 3138896
- 262892 words of memory out of 3000000
+ 261962 words of memory out of 3000000
  10040 multiletter control sequences out of 15000+200000
  9787 words of font info for 35 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 51i,6n,51p,8822b,298s stack positions out of 5000i,500n,10000p,200000b,50000s
-<C:/Program Files/MiKTeX 2.9/fonts/
-type1/public/amsfonts/cm/cmbx10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/pu
-blic/amsfonts/cm/cmbx12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/ams
-fonts/cm/cmcsc10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/c
-m/cmmi10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.
-pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/P
-rogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Program Fil
-es/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmssbx10.pfb><C:/Program Files/MiK
-TeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/
-fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on Relazione.pdf (10 pages, 3254939 bytes).
+ 51i,7n,51p,8822b,298s stack positions out of 5000i,500n,10000p,200000b,50000s
+<C:/Program Files/MiKTeX 2.9/fonts/t
+ype1/public/amsfonts/cm/cmbx10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/pub
+lic/amsfonts/cm/cmbx12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsf
+onts/cm/cmcsc10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm
+/cmmi10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.p
+fb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Pr
+ogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Program File
+s/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmssbx10.pfb><C:/Program Files/MiKT
+eX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/f
+onts/type1/public/amsfonts/cm/cmti10.pfb>
+Output written on Relazione.pdf (10 pages, 3255762 bytes).
 PDF statistics:
  78 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
